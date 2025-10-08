@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Post Details</title>
+        <link rel="stylesheet" href="style.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+        <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+        <style>
+            strong {
+                color: #c8102e;
+                font-size: 25px;
+            }
+
+            #post-section {
+                padding: 30px 20px;
+                background-color: #f5f5f5;
+                font-family: Merriweather, Helvetica, Arial, sans-serif;
+            }
+
+            /* Flex container */
+            .post-container {
+                display: flex;
+                gap: 20px;
+                max-width: 1200px;
+                margin: 0 auto;
+                height: 1000px;
+            }
+
+            /* Left side: Main Post */
+            .post-left {
+                flex: 2;
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 12px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+                white-space: pre-line;
+                overflow-y: auto;
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+            }
+
+            .post-left h1 {
+                font-size: 32px;
+                font-weight: 700;
+                color: #c8102e;
+                border-bottom: 3px solid #c8102e;
+                padding-bottom: 8px;
+                width: 94%;
+                margin-top: -5%;
+            }
+
+            .post-left::-webkit-scrollbar {
+                width: 0px;
+                background: transparent;
+            }
+
+            .post-left p {
+                font-size: 18px;
+                line-height: 1.8;
+                /* margin-bottom: 18px; */
+                color: #333;
+            }
+
+            .post-left p:first-of-type {
+                font-weight: 500;
+                font-size: 19px;
+                color: #222;
+            }
+
+            .post-left img {
+                width: 59vw;
+                margin-bottom: 10px;
+            }
+
+            /* Right side: Video + Articles */
+            .post-right {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+                width: 300px;
+            }
+
+            /* Video Card */
+            .video-card {
+                background-color: #fff;
+                border-radius: 10px;
+                overflow: hidden;
+                box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+            }
+
+            .sidebar-video {
+                width: 100%;
+                display: block;
+                margin-bottom: 0px;
+            }
+
+            .video-caption {
+                padding: 10px;
+                font-size: 14px;
+                color: #555;
+                text-align: center;
+            }
+
+            /* Articles Card */
+            .articles-card {
+                background-color: #fff;
+                border-radius: 10px;
+                padding: 15px;
+                box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+            }
+
+            .articles-card h3 {
+                margin-bottom: 10px;
+                color: #c8102e;
+                font-size: 18px;
+                border-bottom: 1px solid #ddd;
+                padding-bottom: 5px;
+            }
+
+            .articles-card ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            .articles-card li {
+                margin-bottom: 8px;
+            }
+
+            .articles-card li a {
+                text-decoration: none;
+                color: #333;
+                font-size: 14px;
+                transition: color 0.3s;
+            }
+
+            .articles-card li a:hover {
+                color: #c8102e;
+            }
+
+            /* /// */
+            .read-more-box {
+                text-align: center;
+                margin-top: -10%;
+            }
+
+            #readMoreBtn {
+                background: #c8102e;
+                color: #fff;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 6px;
+                cursor: pointer;
+                transition: background 0.3s;
+                border: 1px solid #c8102e;
+            }
+
+            #readMoreBtn:hover {
+                background: white;
+                color: #c8102e;
+
+            }
+
+            .more-posts {
+                margin-top: -50px;
+                background: #fff;
+                border-radius: 8px;
+                box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+            }
+
+            .more-posts h3 {
+                margin-bottom: 15px;
+                color: #c8102e;
+                font-size: 20px;
+            }
+
+            #morePostsList {
+                display: grid;
+                gap: 18px;
+            }
+
+            .more-post {
+                display: flex;
+                gap: 15px;
+                align-items: flex-start;
+                border-bottom: 1px solid #eee;
+                padding-bottom: 12px;
+                margin-top: 30px;
+            }
+
+            .more-post img {
+                width: 120px;
+                height: 80px;
+                object-fit: cover;
+                border-radius: 6px;
+            }
+
+            .more-post h4 {
+                margin: 0 0 5px;
+                font-size: 16px;
+                color: #333;
+            }
+
+            .more-post a {
+                text-decoration: none;
+                color: #c8102e;
+            }
+
+            .more-post p {
+                margin: 0;
+                font-size: 13px;
+                color: #666;
+            }
+
+            .more-post-item {
+                display: flex;
+                gap: 20px;
+                border-radius: 8px;
+                cursor: pointer;
+                transition: transform 0.2s, box-shadow 0.2s;
+                margin-bottom: 15px;
+            }
+
+            .more-post-item:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
+            }
+
+            .more-post-item img {
+                width: 298px;
+                height: 165px;
+                object-fit: cover;
+                border-radius: 6px;
+                flex-shrink: 0;
+            }
+
+            .more-post-content {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+
+            .more-post-content h4 {
+                margin: 0;
+                color: #c8102e;
+                font-size: 18px;
+            }
+
+            .more-post-content p {
+                margin: 5px 0 0 0;
+                font-weight: 500;
+                font-size: 19px;
+                color: #222;
+            }
+
+            .read-more-link {
+                padding: 4px;
+                padding-top: 5%;
+
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="header"></div>
+        <section id="post-section">
+            <div class="post-container">
+                <div class="post-left">
+                    <!-- Main Post -->
+                    <div id="mainPost">
+                        <h2>Main Post Title</h2>
+                        <p>Loading post details...</p>
+                    </div>
+
+                    <!-- Read More Button -->
+                    <div class="read-more-box">
+                        <button id="readMoreBtn">Read More News</button>
+                    </div>
+
+                    <!-- More Posts Section (hidden by default) -->
+                    <div class="more-posts" id="morePosts" style="display: none;">
+                        <!-- <p id="loadingMessage">Loading related posts...</p> -->
+                        <div id="morePostsList"></div>
+                    </div>
+                </div>
+
+                <!-- Right Side: Video + Articles -->
+                <div class="post-right">
+                    <!-- Video Card -->
+                    <div class="video-card">
+                        <video id="sidebarVideo" class="sidebar-video" controls muted playsinline>
+                            <source
+                                src="https://images1.afaqsnewsletter.com/mailers/daily/2025/07/29/mayur_hola_rhs_banner.mp4"
+                                type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+
+                    <!-- Articles Card -->
+                    <div class="articles-card">
+                        <h3>Articles</h3>
+                        <ul id="magazineArticles">
+                            <li><a href="#">Article 1: Lorem ipsum dolor sit</a></li>
+                            <li><a href="#">Article 2: Consectetur adipiscing elit</a></li>
+                            <li><a href="#">Article 3: Sed do eiusmod tempor</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+
+        <div id="footer"></div>
+
+        <!-- <script src="./script.js"></script> -->
+        <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+
+
+        <!-- ///// -->
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                AOS.init({ duration: 500, once: false });
+
+                fetch('header.html')
+                    .then(res => res.text())
+                    .then(html => {
+                        document.getElementById('header').innerHTML = html;
+
+                        const menuToggle = document.getElementById('menu-toggle');
+                        const sidebar = document.getElementById('sidebar');
+                        const overlay = document.getElementById('overlay');
+                        const closeSidebar = document.getElementById('close-sidebar');
+
+                        menuToggle?.addEventListener('click', () => {
+                            sidebar?.classList.add('open');
+                            overlay?.classList.add('active');
+                            document.body.style.overflow = 'hidden';
+                        });
+
+                        const hideSidebar = () => {
+                            sidebar?.classList.remove('open');
+                            overlay?.classList.remove('active');
+                            document.body.style.overflow = '';
+                        };
+
+                        closeSidebar?.addEventListener('click', hideSidebar);
+                        overlay?.addEventListener('click', hideSidebar);
+
+                        const submenuToggles = sidebar?.querySelectorAll('.submenu-toggle') || [];
+                        submenuToggles.forEach(btn => {
+                            btn.addEventListener('click', e => {
+                                e.stopPropagation();
+                                const submenu = btn.parentElement.nextElementSibling;
+                                submenu?.classList.toggle('open');
+                            });
+                        });
+
+                        AOS.refresh();
+                    })
+                    .catch(err => console.error('Header load error:', err));
+
+                fetch('footer.html')
+                    .then(res => res.text())
+                    .then(html => {
+                        document.getElementById('footer').innerHTML = html;
+                        AOS.refresh();
+                    })
+                    .catch(err => console.error('Footer load error:', err));
+
+                function updateTime() {
+                    const now = new Date();
+                    const timeString = now.toLocaleTimeString('en-IN', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit',
+                        hour12: true
+                    });
+                    const liveTime = document.getElementById('live-time');
+                    if (liveTime) {
+                        liveTime.textContent = timeString;
+                    }
+                }
+                setInterval(updateTime, 1000);
+                updateTime();
+            });
+        </script>
+
+
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const params = new URLSearchParams(window.location.search);
+                const postId = params.get('id');
+                const currentSection = params.get('section') || "magazine"; // agar section na ho toh default magazine
+
+                console.log("👉 Current Post ID:", postId);
+                console.log("👉 Current Section:", currentSection);
+
+                // DOM elements
+                const mainPostEl = document.getElementById("mainPost");
+                const morePostsEl = document.getElementById("morePosts");
+                const morePostsListEl = document.getElementById("morePostsList");
+                const readMoreBtn = document.getElementById("readMoreBtn");
+
+                // Function to load related posts from same section
+                async function loadRelatedPosts(sectionName) {
+                    try {
+                        console.log("👉 Loading related posts for section:", sectionName);
+                        const response = await fetch(`http://localhost:3000/api/posts/section/${sectionName}`);
+                        const posts = await response.json();
+
+                        console.log("👉 All posts from API:", posts);
+
+                        // Check if all posts belong to the requested section
+                        const postsWithDifferentSections = posts.filter(post =>
+                            !post.section || !post.section.includes(sectionName)
+                        );
+                        console.log("👉 Posts with different sections:", postsWithDifferentSections);
+
+                        // Current post ko filter out karo aur random posts select karo
+                        const filteredPosts = posts.filter(post => post._id !== postId);
+                        console.log("👉 Filtered posts (excluding current):", filteredPosts);
+
+                        // Randomly select 4 posts (ya jitne available hain)
+                        const relatedPosts = filteredPosts
+                            .sort(() => Math.random() - 0.5) // Random shuffle
+                            .slice(0, 6);
+
+                        console.log("👉 Final related posts to show:", relatedPosts);
+
+                        if (relatedPosts.length > 0) {
+                            morePostsListEl.innerHTML = relatedPosts.map(post => `
+                                <div class="more-post-item" onclick="window.location.href='post-details.html?id=${post._id}&section=${sectionName}'">
+                                    <img src="http://localhost:3000/IMAGE/${post.image || 'default.jpg'}" alt="${post.title}" />
+                                    <div class="more-post-content">
+                                        <h4>${post.title}</h4>
+                                        <p>${post.description ? post.description.substring(0, 100) : (post.content ? post.content.substring(0, 100) + '...' : '')}</p>
+                                        <a href="post-details.html?id=${post._id}&section=${sectionName}" class="read-more-link">Read More</a>
+                                    </div>
+                                </div>
+                            `).join('');
+
+                            // Related posts section initially hidden rahega
+                            // Sirf "Read More" button click karne par show hoga
+                        } else {
+                            console.log("👉 No related posts found for section:", sectionName);
+                        }
+                    } catch (error) {
+                        console.error("Error loading related posts:", error);
+                    }
+                }
+
+                // Load posts from API
+                async function loadPosts() {
+                    try {
+                        // Current post load karo
+                        const currentPostResponse = await fetch(`http://localhost:3000/api/posts/${postId}`);
+                        const currentPost = await currentPostResponse.json();
+
+                        if (currentPost) {
+                            mainPostEl.innerHTML = `
+                                <h1>${currentPost.title}</h1>
+                                 <p>${currentPost.content}</p>
+                                ${currentPost.image ? `<img src="http://localhost:3000/IMAGE/${currentPost.image}" alt="${currentPost.title}" style="max-width: 100%; height: auto; margin: 20px 0;" />` : ''}
+                               
+                                ${currentPost.description ? `<p>${currentPost.description}</p>` : ''}
+                            `;
+
+                            console.log("👉 Current Post Details:", currentPost);
+                            console.log("👉 Current Post Sections:", currentPost.section);
+
+                            // Current post ke section ke related posts load karo
+                            // URL mein jo section parameter hai, uske based par related posts load karo
+                            // Agar URL mein section parameter hai toh wahi use karo, nahi toh post ke sections mein se koi bhi
+                            if (currentSection && currentSection !== "magazine") {
+                                console.log("👉 Using section from URL:", currentSection);
+                                loadRelatedPosts(currentSection);
+                            } else if (currentPost.section && currentPost.section.length > 0) {
+                                // URL mein section na ho ya magazine ho, toh post ke sections mein se koi bhi non-magazine section dhundho
+                                const nonMagazineSection = currentPost.section.find(section => section !== "magazine");
+                                if (nonMagazineSection) {
+                                    console.log("👉 Using non-magazine section from post:", nonMagazineSection);
+                                    loadRelatedPosts(nonMagazineSection);
+                                } else {
+                                    console.log("👉 Using first section from post:", currentPost.section[0]);
+                                    loadRelatedPosts(currentPost.section[0]);
+                                }
+                            } else {
+                                console.log("👉 Using default section:", currentSection);
+                                loadRelatedPosts(currentSection);
+                            }
+                        }
+                    } catch (error) {
+                        console.error("Error loading post:", error);
+                        mainPostEl.innerHTML = `<p>Error loading post. Please try again.</p>`;
+                    }
+                }
+
+                // Read More button functionality
+                readMoreBtn.addEventListener('click', () => {
+                    // Agar more posts already visible hain toh hide karo, nahi toh show karo
+                    if (morePostsEl.style.display === 'none') {
+                        morePostsEl.style.display = 'block';
+                        readMoreBtn.textContent = 'Show Less';
+                    } else {
+                        morePostsEl.style.display = 'none';
+                        readMoreBtn.textContent = 'Read More News';
+                    }
+                });
+
+                loadPosts();
+            });
+
+        </script>
+
+
+
+
+
+
+
+
+
+        <!-- Magazine Section -->
+        <script>
+            fetch('http://localhost:3000/api/posts/section/magazine')
+                .then(response => response.json())
+                .then(data => {
+                    if (!Array.isArray(data)) {
+                        console.error("Magazine data is not an array");
+                        return;
+                    }
+
+                    const container = document.getElementById('magazineArticles');
+                    const limitedPosts = data.slice(0, 6);
+
+                    container.innerHTML = limitedPosts.map(post => `
+                <a href="post-details.html?id=${post._id}">
+                    <div class="article">
+                        <img src="http://localhost:3000/IMAGE/${post.image || 'default.jpg'}" alt="${post.title}" />
+                        <div class="article-text">
+                            <h5>${post.title}</h5>
+                            <p>${post.content || ''}</p>
+                        </div>
+                    </div>
+                </a>
+            `).join('');
+                })
+                .catch(err => console.error("Error:", err));
+        </script>
+
+
+        <!-- Video JS -->
+        <script>
+            window.addEventListener('DOMContentLoaded', () => {
+                const video = document.getElementById('sidebarVideo');
+                if (video) {
+                    video.play().catch(err => {
+                        console.warn('Autoplay failed:', err);
+                    });
+                }
+            });
+        </script>
+
+
+
+    </body>
+
+</html>

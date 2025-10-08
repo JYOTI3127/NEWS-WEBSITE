@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>SOCIAL News</title>
+
+        <link rel="stylesheet" href="style.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+        <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    </head>
+
+    <body>
+
+        <div id="header"></div>
+        <section class="news-hero" id="newsHero">
+            <video autoplay muted loop playsinline class="news-video-bg">
+                <source src="./IMAGE/4874629-hd_1920_1080_25fps.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="news-overlay"></div>
+        </section>
+
+        <!-- Advertising Section -->
+        <section id="advertising-section">
+            <div class="section-header">
+                <h2><a href="./advertising.html">Advertising</a></h2>
+                <a href="./advertising.html" class="see-all-btnn">See All Details</a>
+            </div>
+            <div class="card-grid" id="advertising-container"></div>
+        </section>
+
+        <!-- Marketing Section -->
+        <section id="marketing-section">
+            <div class="section-header">
+                <h2><a href="./marketing.html">Marketing</a></h2>
+                <a href="./marketing.html" class="see-all-btnn">See All Details</a>
+            </div>
+            <div class="card-grid" id="marketing-container"></div>
+        </section>
+
+        <!-- Brands Section -->
+        <section id="brands-section">
+            <div class="section-header">
+                <h2><a href="./brands.html">Brands</a></h2>
+                <a href="./brand.html" class="see-all-btnn">See All Details</a>
+            </div>
+            <div class="card-grid" id="brands-container"></div>
+        </section>
+
+
+
+
+        <!-- 🔥 Rendered Posts -->
+        <div id="postsContainer">
+            <div id="allPosts"></div>
+        </div>
+
+        <div id="footer"></div>
+
+
+        <script src="./script.js" defer></script>
+        <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+
+
+        <!-- ///// -->
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                AOS.init({ duration: 500, once: false });
+
+                fetch('header.html')
+                    .then(res => res.text())
+                    .then(html => {
+                        document.getElementById('header').innerHTML = html;
+
+                        const menuToggle = document.getElementById('menu-toggle');
+                        const sidebar = document.getElementById('sidebar');
+                        const overlay = document.getElementById('overlay');
+                        const closeSidebar = document.getElementById('close-sidebar');
+
+                        menuToggle?.addEventListener('click', () => {
+                            sidebar?.classList.add('open');
+                            overlay?.classList.add('active');
+                            document.body.style.overflow = 'hidden';
+                        });
+
+                        const hideSidebar = () => {
+                            sidebar?.classList.remove('open');
+                            overlay?.classList.remove('active');
+                            document.body.style.overflow = '';
+                        };
+
+                        closeSidebar?.addEventListener('click', hideSidebar);
+                        overlay?.addEventListener('click', hideSidebar);
+
+                        const submenuToggles = sidebar?.querySelectorAll('.submenu-toggle') || [];
+                        submenuToggles.forEach(btn => {
+                            btn.addEventListener('click', e => {
+                                e.stopPropagation();
+                                const submenu = btn.parentElement.nextElementSibling;
+                                submenu?.classList.toggle('open');
+                            });
+                        });
+
+                        AOS.refresh();
+                    })
+                    .catch(err => console.error('Header load error:', err));
+
+                fetch('footer.html')
+                    .then(res => res.text())
+                    .then(html => {
+                        document.getElementById('footer').innerHTML = html;
+                        AOS.refresh();
+                    })
+                    .catch(err => console.error('Footer load error:', err));
+
+                function updateTime() {
+                    const now = new Date();
+                    const timeString = now.toLocaleTimeString('en-IN', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit',
+                        hour12: true
+                    });
+                    const liveTime = document.getElementById('live-time');
+                    if (liveTime) {
+                        liveTime.textContent = timeString;
+                    }
+                }
+                setInterval(updateTime, 1000);
+                updateTime();
+            });
+        </script>
+    </body>
+
+</html>

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <link rel="stylesheet" href="style.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+        <!-- AOS CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    </head>
+
+    <body>
+        <div id="header"></div>
+        <!-- /// -->
+        <section class="contact-banner">
+            <div class="dark-overlay"></div>
+            <div class="overlay-text">
+                <!-- <h1>Contact Us</h1> -->
+            </div>
+        </section>
+        <section class="contact-page">
+            <div class="contact-heading" id="contactHeading"></div>
+            <div class="contact-main">
+                <!-- Left: Contact Form -->
+                <div class="contact-form">
+                    <h3>Send Us a Message</h3>
+                    <form id="contactForm">
+                        <div class="row-2">
+                            <input type="text" name="firstName" placeholder="First Name" required />
+                            <input type="text" name="lastName" placeholder="Last Name" required />
+                        </div>
+                        <div class="row-2">
+                            <input type="tel" name="number" placeholder="Phone Number" required />
+                            <input type="email" name="email" placeholder="Your Email" required />
+                        </div>
+                        <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
+                        <button type="submit">Submit</button>
+                    </form>
+                    <div id="responseMsg"></div>
+                </div>
+                <!-- Right: Contact Info -->
+                <div class="contact-info" id="contactInfo">
+                    <div class="info-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h4>Email</h4>
+                            <p>support@newsy.com</p>
+                        </div>
+                    </div>
+
+
+                    <div class="info-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <h4>Phone</h4>
+                            <p>+91 98765 43210</p>
+                        </div>
+                    </div>
+
+
+                    <div class="info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h4>Address</h4>
+                            <p>Sector 63, Noida, Uttar Pradesh, India</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </section>
+        <section class="map-section">
+            <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d28008.17472635587!2d77.3616!3d28.6272!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce564b5555555%3A0xabcdef1234567890!2sSector%2063%2C%20Noida%2C%20Uttar%20Pradesh!5e0!3m2!1sen!2sin!4v1712345678901"
+                allowfullscreen="" loading="lazy"></iframe>
+        </section>
+
+
+        <!-- // -->
+        <div id="footer"></div>
+        <script src="./script.js" defer></script>
+        <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                AOS.init({
+                    duration: 500,
+                    once: false
+                });
+
+                /* --- HEADER LOAD --- */
+                fetch('header.html')
+                    .then(res => res.text())
+                    .then(html => {
+                        document.getElementById('header').innerHTML = html;
+
+                        // Sidebar Elements
+                        const menuToggle = document.getElementById('menu-toggle');
+                        const sidebar = document.getElementById('sidebar');
+                        const overlay = document.getElementById('overlay');
+                        const closeSidebar = document.getElementById('close-sidebar');
+
+                        menuToggle?.addEventListener('click', () => {
+                            sidebar?.classList.add('open');
+                            overlay?.classList.add('active');
+                            document.body.style.overflow = 'hidden';
+                        });
+
+                        const hideSidebar = () => {
+                            sidebar?.classList.remove('open');
+                            overlay?.classList.remove('active');
+                            document.body.style.overflow = '';
+                        };
+                        closeSidebar?.addEventListener('click', hideSidebar);
+                        overlay?.addEventListener('click', hideSidebar);
+
+                        const submenuToggles = sidebar?.querySelectorAll('.submenu-toggle') || [];
+                        submenuToggles.forEach(btn => {
+                            btn.addEventListener('click', e => {
+                                e.stopPropagation();
+                                const submenu = btn.parentElement.nextElementSibling;
+                                submenu?.classList.toggle('open');
+                            });
+                        });
+
+                        // Optional scroll
+                        const mainSection = document.getElementById('main-content');
+                        if (mainSection) {
+                            mainSection.scrollIntoView({ behavior: 'smooth' });
+                        }
+
+                        // ✅ Refresh AOS after header load
+                        AOS.refresh();
+                    })
+                    .catch(err => console.error('Header load error:', err));
+
+                /* --- FOOTER LOAD --- */
+                fetch('footer.html')
+                    .then(res => res.text())
+                    .then(html => {
+                        document.getElementById('footer').innerHTML = html;
+
+                        // ✅ Refresh AOS after footer load
+                        AOS.refresh();
+                    })
+                    .catch(err => console.error('Footer load error:', err));
+
+                // Time update
+                function updateTime() {
+                    const now = new Date();
+                    const timeString = now.toLocaleTimeString('en-IN', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit',
+                        hour12: true
+                    });
+                    const liveTime = document.getElementById('live-time');
+                    if (liveTime) {
+                        liveTime.textContent = timeString;
+                    }
+                }
+                setInterval(updateTime, 1000);
+                updateTime();
+            });
+        </script>
+
+        <script>
+        // Contact Form Submit Handler with Validation
+        const contactForm = document.getElementById("contactForm");
+        const responseMsg = document.getElementById("responseMsg");
+
+        contactForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        // Basic Validation
+        const firstName = contactForm.firstName.value.trim();
+        const lastName = contactForm.lastName.value.trim();
+        const phone = contactForm.number.value.trim();
+        const email = contactForm.email.value.trim();
+        const message = contactForm.message.value.trim();
+
+        // Name should not contain numbers
+        const nameRegex = /^[A-Za-z ]+$/;
+        if (!nameRegex.test(firstName) || !nameRegex.test(lastName)) {
+        responseMsg.textContent = "Name should only contain alphabets.";
+        responseMsg.style.color = "red";
+        return;
+        }
+
+        // Phone should be exactly 10 digits, no alphabets
+        const phoneRegex = /^\d{10}$/;
+        if (!phoneRegex.test(phone)) {
+        responseMsg.textContent = "Phone number must be exactly 10 digits.";
+        responseMsg.style.color = "red";
+        return;
+        }
+
+        // Form data
+        const formData = {
+        name: firstName + " " + lastName,
+        email: email,
+        number: phone,
+        message: message
+        };
+
+        try {
+        const res = await fetch("/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData)
+        });
+
+        const responseText = await res.text();
+
+        if (res.ok) {
+        try {
+        const result = JSON.parse(responseText);
+        responseMsg.textContent = result.message || "Message sent successfully!";
+        responseMsg.style.color = "green";
+        contactForm.reset();
+        } catch {
+        responseMsg.textContent = "Message sent successfully!";
+        responseMsg.style.color = "green";
+        contactForm.reset();
+        }
+        // Hide success message after 1.5 seconds
+        setTimeout(() => {
+        responseMsg.textContent = "";
+        }, 1500);
+        } else {
+        try {
+        const result = JSON.parse(responseText);
+        responseMsg.textContent = result.error || "Failed to send message.";
+        if (result.details) {
+        responseMsg.textContent += " - " + result.details;
+        }
+        console.error("Server error:", result);
+        } catch {
+        responseMsg.textContent = "Server error: " + responseText;
+        console.error("Server text error:", responseText);
+        }
+        responseMsg.style.color = "red";
+        }
+        } catch (err) {
+        responseMsg.textContent = "Network error: " + err.message;
+        responseMsg.style.color = "red";
+        console.error("Network error details:", err);
+        }
+        });
+        </script>
+    </body>
+
+</html>

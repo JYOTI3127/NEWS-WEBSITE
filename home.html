@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Latest News</title>
+        <link rel="stylesheet" href="style.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+        <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    </head>
+
+    <body>
+
+        <div id="header"></div>
+
+        <!-- BANNER Section -->
+        <div class="banner-container">
+            <div class="banner-slider" id="bannerSlider">
+            </div>
+        </div>
+
+        <!-- MAGAZINE Section -->
+        <div class="latest-heading">
+            <div class="heading-content">
+                <span class="icon">📰</span>
+                <span class="text">Latest News & Updates</span>
+                <span class="live-indicator">Live</span>
+            </div>
+        </div>
+        <!-- ////////////// -->
+        <div class="news-container">
+            <div class="left-center-wrapper">
+                <!-- Left Sidebar -->
+                <div class="left-sidebar sidebar" id="leftSidebar"></div>
+
+                <!-- Center Posts -->
+                <div class="main-posts-container" id="centerPosts"></div>
+            </div>
+
+            <!-- Right Sidebar -->
+            <div class="right-sidebar sidebar">
+                <div id="rightSidebarAdContent"></div>
+                <div class="horizontal-posts" id="rightSidebarPosts"></div>
+            </div>
+        </div>
+
+
+        <!-- ///////////////// -->
+
+        <section id="sports-section">
+            <div class="section-header">
+                <h2><a href="./sport.html">Sports</a></h2>
+                <a href="./sport.html" class="see-all-btnn">See All Details</a>
+            </div>
+            <div class="card-grid" id="sports-container"></div>
+        </section>
+
+        <section id="event-section">
+            <div class="section-header">
+                <h2><a href="./events.html">Event</a></h2>
+                <a href="./events.html" class="see-all-btnn">See All Details</a>
+            </div>
+            <div class="card-grid" id="event-container"></div>
+        </section>
+
+        <section id="politics-section">
+            <div class="section-header">
+                <h2><a href="./POLITICS.html">Politic</a></h2>
+                <a href="./POLITICS.html" class="see-all-btnn">See All Details</a>
+            </div>
+            <div class="card-grid" id="politics-container"></div>
+        </section>
+
+        <!-- 🔥 Rendered Posts -->
+        <div id="postsContainer">
+            <div id="allPosts"></div>
+        </div>
+
+        <div id="footer"></div>
+
+        <script src="./script.js" defer></script>
+        <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+
+        <!-- ///// -->
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                AOS.init({ duration: 500, once: false });
+
+                fetch('header.html')
+                    .then(res => res.text())
+                    .then(html => {
+                        document.getElementById('header').innerHTML = html;
+
+                        const menuToggle = document.getElementById('menu-toggle');
+                        const sidebar = document.getElementById('sidebar');
+                        const overlay = document.getElementById('overlay');
+                        const closeSidebar = document.getElementById('close-sidebar');
+
+                        menuToggle?.addEventListener('click', () => {
+                            sidebar?.classList.add('open');
+                            overlay?.classList.add('active');
+                            document.body.style.overflow = 'hidden';
+                            document.body.style.paddingLeft = '280px';
+                        });
+
+                        const hideSidebar = () => {
+                            sidebar?.classList.remove('open');
+                            overlay?.classList.remove('active');
+                            document.body.style.overflow = '';
+                            document.body.style.paddingLeft = '';
+                        };
+
+                        closeSidebar?.addEventListener('click', hideSidebar);
+                        overlay?.addEventListener('click', hideSidebar);
+
+                        const submenuToggles = sidebar?.querySelectorAll('.submenu-toggle') || [];
+                        submenuToggles.forEach(btn => {
+                            btn.addEventListener('click', e => {
+                                e.stopPropagation();
+                                const submenu = btn.parentElement.nextElementSibling;
+                                submenu?.classList.toggle('open');
+                            });
+                        });
+
+                        AOS.refresh();
+                    })
+                    .catch(err => console.error('Header load error:', err));
+
+                fetch('footer.html')
+                    .then(res => res.text())
+                    .then(html => {
+                        document.getElementById('footer').innerHTML = html;
+                        AOS.refresh();
+                    })
+                    .catch(err => console.error('Footer load error:', err));
+
+                function updateTime() {
+                    const now = new Date();
+                    const timeString = now.toLocaleTimeString('en-IN', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit',
+                        hour12: true
+                    });
+                    const liveTime = document.getElementById('live-time');
+                    if (liveTime) {
+                        liveTime.textContent = timeString;
+                    }
+                }
+                setInterval(updateTime, 1000);
+                updateTime();
+
+                loadRightSidebarAd();
+            });
+
+            async function loadRightSidebarAd() {
+                try {
+                    const response = await fetch('/api/advertisements');
+                    const ads = await response.json();
+                    const container = document.getElementById('rightSidebarAdContent');
+                    if (ads.length > 0) {
+                        const ad = ads[0]; // Show first ad as preview
+                        container.innerHTML = `
+            <h4>${ad.title}</h4>
+            <p>${ad.content || ''}</p>
+            ${ad.mediaType === 'image' ? `<img src="http://localhost:3000/MEDIA/${ad.mediaFile}" alt="${ad.title}" style="max-width: 100%; border-radius: 4px;" />` : `<video controls style="max-width: 100%;"><source src="http://localhost:3000/MEDIA/${ad.mediaFile}" type="video/mp4"></video>`}
+            ${ad.link ? `<a href="${ad.link}" target="_blank" style="display: inline-block; margin-top: 10px; padding: 8px 12px; background: #007bff; color: white; text-decoration: none; border-radius: 4px;">Learn More</a>` : ''}
+          `;
+                    } else {
+                        container.innerHTML = '<p>No advertisements available.</p>';
+                    }
+                } catch (error) {
+                    console.error('Error loading advertisement:', error);
+                }
+            }
+        </script>
+    </body>
+
+</html>

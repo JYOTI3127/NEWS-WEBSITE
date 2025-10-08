@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Banner Admin Dashboard</title>
+        <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+        <style>
+            /* Reset & basics */
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+            }
+
+            body {
+                margin: 0;
+                padding: 0;
+                font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+                    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+                background: #f5f7fa;
+                color: #333;
+                display: flex;
+            }
+
+            /* Sidebar */
+            .sidebar {
+                width: 243px;
+                background: linear-gradient(135deg, #4f51c0, #353a9b);
+                color: #f0f2ff;
+                display: flex;
+                flex-direction: column;
+                padding: 30px 25px;
+                box-shadow: 4px 0 15px rgba(53, 58, 155, 0.25);
+            }
+
+            .sidebar h2 {
+                font-weight: 800;
+                font-size: 28px;
+                letter-spacing: 1.4px;
+                margin-bottom: 40px;
+                user-select: none;
+            }
+
+            .sidebar nav a {
+                color: #c3c9ffcc;
+                display: block;
+                padding: 14px 20px;
+                font-weight: 600;
+                font-size: 15px;
+                margin-bottom: 12px;
+                border-radius: 8px;
+                text-decoration: none;
+                transition: background-color 0.3s, color 0.3s;
+                box-shadow: inset 0 0 0 0 transparent;
+            }
+
+            .sidebar nav a.active,
+            .sidebar nav a:hover {
+                background: rgba(255 255 255 / 0.15);
+                color: #fff;
+                box-shadow: inset 3px 0 0 0 #fff;
+            }
+
+            /* Main content */
+            .main-content {
+                flex-grow: 1;
+                padding: 35px 50px;
+                overflow-y: auto;
+                display: flex;
+                flex-direction: column;
+            }
+
+            /* Header */
+            .header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 40px;
+            }
+
+            .header h1 {
+                font-weight: 800;
+                font-size: 32px;
+                color: #353a9b;
+            }
+
+            .user-info {
+                font-weight: 600;
+                font-size: 16px;
+                color: #6b6f8c;
+                display: flex;
+                align-items: center;
+                gap: 15px;
+            }
+
+            /* Logout button */
+            .logout-btn {
+                background: #e74c3c;
+                padding: 8px 14px;
+                color: #fff;
+                border-radius: 8px;
+                font-weight: 600;
+                border: none;
+                cursor: pointer;
+                font-size: 14px;
+                transition: background-color 0.3s ease;
+            }
+
+            .logout-btn:hover {
+                background: #c0392b;
+            }
+
+            /* Form styling */
+            #bannerForm {
+                background: #fff;
+                padding: 30px 35px;
+                border-radius: 14px;
+                box-shadow: 0 6px 22px rgba(82, 89, 145, 0.15);
+                max-width: 700px;
+                margin-bottom: 50px;
+                transition: box-shadow 0.3s ease;
+            }
+
+            #bannerForm:hover {
+                box-shadow: 0 10px 28px rgba(82, 89, 145, 0.25);
+            }
+
+            #bannerForm label {
+                display: block;
+                font-weight: 700;
+                font-size: 14px;
+                color: #454d6b;
+                margin-bottom: 8px;
+                margin-top: 24px;
+            }
+
+            #bannerForm input[type="text"],
+            #bannerForm textarea,
+            #bannerForm input[type="file"] {
+                width: 100%;
+                font-size: 16px;
+                padding: 14px 18px;
+                border-radius: 10px;
+                border: 1.8px solid #d6d8e7;
+                outline-offset: 2px;
+                transition: border-color 0.3s ease;
+                resize: vertical;
+                font-family: inherit;
+                color: #333;
+            }
+
+            #bannerForm input[type="text"]:focus,
+            #bannerForm textarea:focus,
+            #bannerForm input[type="file"]:focus {
+                border-color: #353a9b;
+            }
+
+            #bannerForm button {
+                margin-top: 30px;
+                background: #353a9b;
+                color: white;
+                border: none;
+                font-weight: 700;
+                font-size: 18px;
+                padding: 14px 28px;
+                border-radius: 12px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+                box-shadow: 0 6px 15px rgba(53, 58, 155, 0.4);
+            }
+
+            #bannerForm button:hover {
+                background: #4f51c0;
+                box-shadow: 0 8px 22px rgba(53, 58, 155, 0.6);
+            }
+
+            /* Table styles */
+            .posts-table {
+                width: 100%;
+                border-collapse: separate;
+                border-spacing: 0 10px;
+            }
+
+            .posts-table th,
+            .posts-table td {
+                padding: 14px 18px;
+                text-align: left;
+                font-weight: 600;
+                color: #5a5f7a;
+            }
+
+            .posts-table th {
+                background-color: transparent;
+                font-weight: 700;
+                font-size: 14px;
+                letter-spacing: 1px;
+            }
+
+            .posts-table tbody tr {
+                background: #fff;
+                box-shadow: 0 4px 15px rgba(82, 89, 145, 0.1);
+                border-radius: 12px;
+                transition: box-shadow 0.3s ease;
+            }
+
+            .posts-table tbody tr:hover {
+                box-shadow: 0 8px 30px rgba(82, 89, 145, 0.15);
+            }
+
+            .posts-table td {
+                border: none;
+                vertical-align: middle;
+                font-weight: 500;
+                font-size: 15px;
+                overflow: visible;
+            }
+
+            /* Banner Images */
+            .posts-table td img {
+                width: 150px;
+                height: 80px;
+                object-fit: cover;
+                border-radius: 10px;
+                box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+                display: block;
+                pointer-events: none;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+                -webkit-touch-callout: none;
+                -webkit-user-drag: none;
+                -khtml-user-drag: none;
+                -moz-user-drag: none;
+                -o-user-drag: none;
+                /* user-drag: none; */
+                cursor: default;
+                position: relative;
+                z-index: 1;
+                image-rendering: auto;
+                -webkit-image-rendering: auto;
+                -moz-image-rendering: auto;
+                -o-image-rendering: auto;
+            }
+
+            .posts-table td img:hover {
+                opacity: 1 !important;
+                visibility: visible !important;
+                display: block !important;
+                pointer-events: auto !important;
+            }
+
+            #imagePreview {
+                max-width: 200px;
+                margin-top: 10px;
+                border-radius: 8px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                pointer-events: none;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+                -webkit-touch-callout: none;
+                -webkit-user-drag: none;
+                -khtml-user-drag: none;
+                -moz-user-drag: none;
+                -o-user-drag: none;
+                /* user-drag: none; */
+                cursor: default;
+            }
+
+            /* Action buttons */
+            .btn {
+                padding: 8px 18px;
+                border-radius: 10px;
+                font-weight: 600;
+                cursor: pointer;
+                border: none;
+                color: white;
+                font-size: 14px;
+                transition: background-color 0.3s ease, transform 0.2s ease;
+            }
+
+            .btn.edit {
+                background-color: #4f51c0;
+            }
+
+            .btn.edit:hover {
+                background-color: #353a9b;
+                transform: scale(1.05);
+            }
+
+            .btn.delete {
+                background-color: #e74c3c;
+            }
+
+            .btn.delete:hover {
+                background-color: #b63127;
+                transform: scale(1.05);
+            }
+
+            /* Login overlay */
+            .login-wrapper {
+                display: none;
+                position: fixed;
+                inset: 0;
+                background: rgba(245, 247, 250, 0.98);
+                backdrop-filter: blur(4px);
+                justify-content: center;
+                align-items: center;
+                z-index: 9999;
+            }
+
+            .login-box {
+                background: white;
+                padding: 40px;
+                border-radius: 12px;
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+                max-width: 400px;
+                width: 90%;
+                text-align: center;
+            }
+
+            .login-box h2 {
+                margin-bottom: 25px;
+                color: #353a9b;
+                font-size: 24px;
+                font-weight: 800;
+            }
+
+            .login-box input {
+                width: 100%;
+                padding: 12px 14px;
+                margin-bottom: 18px;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                font-size: 16px;
+            }
+
+            .login-box button {
+                width: 100%;
+                padding: 12px;
+                background-color: #353a9b;
+                color: white;
+                border: none;
+                border-radius: 10px;
+                font-size: 16px;
+                font-weight: bold;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+
+            .login-box button:hover {
+                background-color: #4f51c0;
+            }
+
+            /* Responsive */
+            @media (max-width: 900px) {
+                body {
+                    flex-direction: column;
+                }
+
+                .sidebar {
+                    width: 100%;
+                    flex-direction: row;
+                    padding: 15px;
+                    box-shadow: none;
+                    justify-content: space-around;
+                }
+
+                .sidebar h2 {
+                    display: none;
+                }
+
+                .sidebar nav a {
+                    padding: 10px 15px;
+                    font-size: 13px;
+                    margin: 0 6px;
+                    border-radius: 6px;
+                }
+
+                .main-content {
+                    padding: 25px 20px;
+                }
+
+                #bannerForm {
+                    max-width: 100%;
+                    padding: 20px;
+                    margin-bottom: 30px;
+                }
+
+                .posts-table td img {
+                    width: 120px;
+                    height: 60px;
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <!-- Login Overlay -->
+        <div class="login-wrapper" id="loginWrapper" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+            <div class="login-box">
+                <h2 id="loginTitle">Admin Login</h2>
+                <input type="text" id="loginUsername" placeholder="Username" required autocomplete="username" />
+                <input type="password" id="loginPassword" placeholder="Password" required
+                    autocomplete="current-password" />
+                <button type="button" onclick="handleLogin()">Login</button>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar" aria-label="Sidebar Navigation">
+            <h2>Admin Panel</h2>
+            <nav role="navigation">
+                <a href="./admin.html">Dashboard</a>
+                <a href="./new-post.html">Add-Posts</a>
+                <a href="./banner-admin.html">Add-Banners</a>
+                <a href="./advertisement-admin.html">Add-ADDS</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content" id="mainContent" tabindex="-1">
+            <header class="header">
+                <h1>Banner Management</h1>
+                <div class="user-info">
+                    Welcome, <span id="adminName">Admin</span>
+                    <button class="logout-btn" onclick="handleLogout()">Logout</button>
+                </div>
+            </header>
+
+            <!-- Banner Form -->
+            <form id="bannerForm" enctype="multipart/form-data" novalidate>
+                <label for="title">Title</label>
+                <input type="text" id="title" name="title" placeholder="Enter banner title" required />
+
+                <label for="content">Content</label>
+                <textarea id="content" name="content" placeholder="Write banner content" required></textarea>
+
+                <label for="image">Image</label>
+                <input type="file" id="image" name="image" accept="image/*" />
+                <img id="imagePreview" style="display:none; max-width:200px; margin-top:10px; border-radius:8px;"
+                    alt="Banner Preview" />
+
+                <input type="hidden" id="bannerId" name="id" />
+                <button type="submit">Add Banner</button>
+                <button type="button" id="cancelBtn"
+                    style="display: none; background: #6c757d; margin-left: 10px;">Cancel</button>
+            </form>
+
+            <!-- Banners Table -->
+            <table class="posts-table" id="bannersTable" aria-label="Banners List Table">
+                <thead>
+                    <tr>
+                        <th>Banner Image</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="2">Loading banners...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </main>
+
+        <script>
+            const apiBase = 'http://localhost:3000/api/banners';
+
+            const loginWrapper = document.getElementById('loginWrapper');
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            const adminNameSpan = document.getElementById('adminName');
+
+            const bannerForm = document.getElementById('bannerForm');
+            const bannerIdInput = document.getElementById('bannerId');
+            const titleInput = document.getElementById('title');
+            const contentInput = document.getElementById('content');
+            const imageInput = document.getElementById('image');
+
+            const imagePreview = document.getElementById('imagePreview') || document.createElement('img');
+            imagePreview.id = 'imagePreview';
+            imagePreview.style.maxWidth = '150px';
+            imagePreview.style.marginTop = '10px';
+            imagePreview.style.borderRadius = '10px';
+            imagePreview.style.display = 'none';
+            imageInput.parentNode.appendChild(imagePreview);
+
+            imageInput.addEventListener('change', () => {
+                if (imageInput.files && imageInput.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        imagePreview.src = e.target.result;
+                        imagePreview.style.display = 'block';
+                        imagePreview.onclick = () => false; // Prevent navigation on click
+                        imagePreview.style.pointerEvents = 'none'; // Disable pointer events
+                    };
+                    reader.readAsDataURL(imageInput.files[0]);
+                } else {
+                    imagePreview.style.display = 'none';
+                    imagePreview.src = '';
+                }
+            });
+
+            function checkLogin() {
+                const loggedIn = localStorage.getItem('adminLoggedIn');
+                if (loggedIn === 'true') {
+                    loginWrapper.style.display = 'none';
+                    sidebar.style.display = 'flex';
+                    mainContent.style.display = 'flex';
+                    loadBanners();
+                } else {
+                    loginWrapper.style.display = 'flex';
+                    sidebar.style.display = 'none';
+                    mainContent.style.display = 'none';
+                }
+            }
+
+            function handleLogin() {
+                const username = document.getElementById('loginUsername').value.trim();
+                const password = document.getElementById('loginPassword').value.trim();
+
+                if (username === 'admin' && password === 'admin123') {
+                    localStorage.setItem('adminLoggedIn', 'true');
+                    checkLogin();
+                } else {
+                    alert('Invalid credentials!');
+                }
+            }
+
+            function handleLogout() {
+                localStorage.removeItem('adminLoggedIn');
+                checkLogin();
+            }
+
+            async function loadBanners() {
+                try {
+                    const res = await fetch(`${apiBase}`);
+                    if (!res.ok) {
+                        throw new Error(`HTTP error! status: ${res.status}`);
+                    }
+                    const banners = await res.json();
+
+                    if (!Array.isArray(banners)) {
+                        console.error('Expected array but got:', banners);
+                        throw new Error('Invalid response format');
+                    }
+
+                    const tbody = document.querySelector("#bannersTable tbody");
+                    tbody.innerHTML = ""; // Clear existing rows
+
+                    if (banners.length === 0) {
+                        tbody.innerHTML = `<tr><td colspan="2" style="text-align:center; padding:30px; color:#999;">No banners found.</td></tr>`;
+                        return;
+                    }
+
+                    banners.forEach((banner) => {
+                        const tr = document.createElement("tr");
+                        tr.innerHTML = `
+            <td><img src="http://localhost:3000/IMAGE/${encodeURIComponent(banner.image)}" alt="Banner" onclick="return false;" style="pointer-events: none;" /></td>
+            <td>
+                <button class="btn edit" onclick="editBanner('${banner._id}')">Edit</button>
+                <button class="btn delete" onclick="deleteBanner('${banner._id}')">Delete</button>
+            </td>
+            `;
+                        tbody.appendChild(tr);
+                    });
+                } catch (err) {
+                    console.error("Failed to load banners", err);
+                    const tbody = document.querySelector("#bannersTable tbody");
+                    tbody.innerHTML = `<tr><td colspan="2" style="text-align:center; padding:30px; color:#e74c3c;">Error loading banners: ${err.message}</td></tr>`;
+                }
+            }
+
+            async function editBanner(id) {
+                try {
+                    const res = await fetch(`${apiBase}/${id}`);
+                    if (!res.ok) throw new Error("Banner not found");
+                    const banner = await res.json();
+
+                    // Fill the form fields
+                    bannerIdInput.value = banner._id;
+                    titleInput.value = banner.title;
+                    contentInput.value = banner.content;
+
+                    if (banner.image) {
+                        imagePreview.src = `http://localhost:3000/IMAGE/${encodeURIComponent(banner.image)}`;
+                        imagePreview.style.display = "block";
+                    } else {
+                        imagePreview.style.display = "none";
+                    }
+
+                    document.getElementById('cancelBtn').style.display = 'inline-block';
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+
+                } catch (err) {
+                    alert("Error loading banner for edit");
+                    console.error(err);
+                }
+            }
+
+            async function deleteBanner(id) {
+                if (!confirm("Are you sure you want to delete this banner?")) return;
+                try {
+                    const res = await fetch(`${apiBase}/${id}`, { method: "DELETE" });
+                    if (res.ok) {
+                        alert("Banner deleted!");
+                        loadBanners();
+                    } else {
+                        alert("Failed to delete");
+                    }
+                } catch (err) {
+                    alert("Error deleting banner");
+                    console.error(err);
+                }
+            }
+
+            bannerForm.addEventListener("submit", async (e) => {
+                e.preventDefault();
+
+                if (!bannerIdInput.value && !imageInput.files.length) {
+                    alert("Please upload an image.");
+                    return;
+                }
+
+                const formData = new FormData(bannerForm);
+                const id = bannerIdInput.value;
+
+                const submitBtn = bannerForm.querySelector('button[type="submit"]');
+                submitBtn.disabled = true;
+                submitBtn.textContent = id ? "Updating..." : "Adding...";
+
+                try {
+                    let res;
+                    if (id) {
+                        res = await fetch(`${apiBase}/${id}`, { method: 'PUT', body: formData });
+                    } else {
+                        res = await fetch(`${apiBase}`, { method: 'POST', body: formData });
+                    }
+
+                    if (res.ok) {
+                        alert(id ? "Banner updated!" : "Banner added!");
+                        bannerForm.reset();
+                        bannerIdInput.value = "";
+                        imagePreview.style.display = "none";
+                        submitBtn.textContent = "Add Banner";
+                        loadBanners();
+                    } else {
+                        const data = await res.json();
+                        alert(data.message || "Failed to save banner");
+                    }
+                } catch (err) {
+                    alert("Error saving banner");
+                    console.error(err);
+                } finally {
+                    submitBtn.disabled = false;
+                }
+            });
+
+            document.getElementById('cancelBtn').addEventListener('click', () => {
+                bannerForm.reset();
+                bannerIdInput.value = "";
+                imagePreview.style.display = "none";
+                document.getElementById('cancelBtn').style.display = 'none';
+            });
+
+            document.addEventListener("DOMContentLoaded", () => {
+                checkLogin();
+            });
+        </script>
+    </body>
+
+</html>

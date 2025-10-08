@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Professional Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
+
+    <style>
+      /* Reset & basics */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+          Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        background: #f5f7fa;
+        color: #333;
+        display: flex;
+      }
+
+      /* Sidebar */
+      .sidebar {
+        width: 243px;
+        background: linear-gradient(135deg, #4f51c0, #353a9b);
+        color: #f0f2ff;
+        display: flex;
+        flex-direction: column;
+        padding: 30px 25px;
+        box-shadow: 4px 0 15px rgba(53, 58, 155, 0.25);
+        /* width: 28vw; */
+      }
+
+      .sidebar h2 {
+        font-weight: 800;
+        font-size: 28px;
+        letter-spacing: 1.4px;
+        margin-bottom: 40px;
+        user-select: none;
+      }
+
+      .sidebar nav a {
+        color: #c3c9ffcc;
+        display: block;
+        padding: 14px 20px;
+        font-weight: 600;
+        font-size: 15px;
+        margin-bottom: 12px;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: background-color 0.3s, color 0.3s;
+        box-shadow: inset 0 0 0 0 transparent;
+      }
+
+      .sidebar nav a.active,
+      .sidebar nav a:hover {
+        background: rgba(255 255 255 / 0.15);
+        color: #fff;
+        box-shadow: inset 3px 0 0 0 #fff;
+      }
+
+      /* Main content */
+      .main-content {
+        flex-grow: 1;
+        padding: 35px 50px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* Header */
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 40px;
+      }
+
+      .header h1 {
+        font-weight: 800;
+        font-size: 32px;
+        color: #353a9b;
+      }
+
+      .user-info {
+        font-weight: 600;
+        font-size: 16px;
+        color: #6b6f8c;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      /* Logout button */
+      .logout-btn {
+        background: #e74c3c;
+        padding: 8px 14px;
+        color: #fff;
+        border-radius: 8px;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background-color 0.3s ease;
+      }
+
+      .logout-btn:hover {
+        background: #c0392b;
+      }
+
+
+
+      /* Table styles */
+      .posts-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0 10px;
+      }
+
+      .posts-table th,
+      .posts-table td {
+        padding: 14px 18px;
+        text-align: left;
+        font-weight: 600;
+        color: #5a5f7a;
+      }
+
+      .posts-table th {
+        background-color: transparent;
+        font-weight: 700;
+        font-size: 14px;
+        letter-spacing: 1px;
+      }
+
+      .posts-table tbody tr {
+        background: #fff;
+        box-shadow: 0 4px 15px rgba(82, 89, 145, 0.1);
+        border-radius: 12px;
+        transition: box-shadow 0.3s ease;
+      }
+
+      .posts-table tbody tr:hover {
+        box-shadow: 0 8px 30px rgba(82, 89, 145, 0.15);
+      }
+
+      .posts-table td {
+        border: none;
+        vertical-align: middle;
+        font-weight: 500;
+        font-size: 15px;
+        width: 0px;
+      }
+
+      .posts-table td img {
+        width: 90px;
+        height: 55px;
+        object-fit: cover;
+        border-radius: 10px;
+        box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Action buttons */
+      .btn {
+        padding: 8px 18px;
+        border-radius: 10px;
+        font-weight: 600;
+        cursor: pointer;
+        border: none;
+        color: white;
+        font-size: 14px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+      }
+
+      .btn.edit {
+        background-color: #4f51c0;
+      }
+
+      .btn.edit:hover {
+        background-color: #353a9b;
+        transform: scale(1.05);
+      }
+
+      .btn.delete {
+        background-color: #e74c3c;
+      }
+
+      .btn.delete:hover {
+        background-color: #b63127;
+        transform: scale(1.05);
+      }
+
+      /* Login overlay */
+      .login-wrapper {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(245, 247, 250, 0.98);
+        backdrop-filter: blur(4px);
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+      }
+
+      .login-box {
+        background: white;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        max-width: 400px;
+        width: 90%;
+        text-align: center;
+      }
+
+      .login-box h2 {
+        margin-bottom: 25px;
+        color: #353a9b;
+        font-size: 24px;
+        font-weight: 800;
+      }
+
+      .login-box input {
+        width: 100%;
+        padding: 12px 14px;
+        margin-bottom: 18px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 16px;
+      }
+
+      .login-box button {
+        width: 100%;
+        padding: 12px;
+        background-color: #353a9b;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .login-box button:hover {
+        background-color: #4f51c0;
+      }
+
+      .checkbox-container {
+        display: flex;
+        flex-wrap: wrap;
+        max-width: 600px;
+        /* optional */
+        margin: 20px auto;
+      }
+
+      .checkbox-column {
+        flex: 1;
+        padding: 10px;
+        min-width: 250px;
+        /* ensure wrapping for small screens */
+      }
+
+      .checkbox-column label {
+        display: block;
+        margin-bottom: 8px;
+        font-family: Arial, sans-serif;
+      }
+
+      /* Responsive */
+      @media (max-width: 900px) {
+        body {
+          flex-direction: column;
+        }
+
+        .sidebar {
+          width: 100%;
+          flex-direction: row;
+          padding: 15px;
+          box-shadow: none;
+          justify-content: space-around;
+        }
+
+        .sidebar h2 {
+          display: none;
+        }
+
+        .sidebar nav a {
+          padding: 10px 15px;
+          font-size: 13px;
+          margin: 0 6px;
+          border-radius: 6px;
+        }
+
+        .main-content {
+          padding: 25px 20px;
+        }
+
+        .posts-table td img {
+          width: 70px;
+          height: 45px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Login Overlay -->
+    <div class="login-wrapper" id="loginWrapper" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+      <div class="login-box">
+        <h2 id="loginTitle">Admin Login</h2>
+        <input type="text" id="loginUsername" placeholder="Username" required autocomplete="username" />
+        <input type="password" id="loginPassword" placeholder="Password" required autocomplete="current-password" />
+        <button type="button" onclick="handleLogin()">Login</button>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar" aria-label="Sidebar Navigation">
+      <h2>Admin Panel</h2>
+      <nav role="navigation">
+        <a href="./admin.html">Dashboard</a>
+        <a href="./new-post.html">Add-Posts</a>
+        <a href="./banner-admin.html">Add-Banners</a>
+        <a href="./advertisement-admin.html">Add-ADDS</a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent" tabindex="-1">
+      <header class="header">
+        <h1>Posts Management</h1>
+        <div class="total-posts">
+          Total Posts: <span id="totalPosts">0</span>
+        </div>
+        <div class="user-info">
+          Welcome, <span id="adminName">Admin</span>
+          <button class="logout-btn" onclick="handleLogout()">Logout</button>
+        </div>
+
+      </header>
+
+
+
+
+      <!-- Posts Table -->
+      <table class="posts-table" id="postsTable" aria-label="Posts List Table">
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Title</th>
+            <th>Content</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="4">Loading posts...</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Pagination -->
+      <div class="pagination" id="pagination"
+        style="display: flex; justify-content: center; align-items: center; gap: 20px; margin-top: 20px;">
+        <button id="prevBtn" class="btn" style="background-color: #6c757d;">Previous</button>
+        <span id="pageInfo">Page 1 of 1</span>
+        <button id="nextBtn" class="btn" style="background-color: #6c757d;">Next</button>
+      </div>
+
+      <!-- Banners Section -->
+      <div id="bannersSection" style="display: none;">
+        <form id="bannerForm" enctype="multipart/form-data" novalidate>
+          <label for="bannerTitle">Title</label>
+          <input type="text" id="bannerTitle" name="title" placeholder="Enter banner title" required />
+
+          <label for="bannerContent">Content</label>
+          <textarea id="bannerContent" name="content" placeholder="Write banner content" required></textarea>
+
+          <label for="bannerImage">Image</label>
+          <input type="file" id="bannerImage" name="image" accept="image/*" />
+          <img id="bannerImagePreview" style="display:none; max-width:200px; margin-top:10px; border-radius:8px;"
+            alt="Banner Preview" />
+
+          <input type="hidden" id="bannerId" name="id" />
+          <input type="hidden" name="section" value="magazine" />
+          <button type="submit">Add Banner</button>
+        </form>
+
+        <table class="posts-table" id="bannersTable" aria-label="Banners List Table">
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Title</th>
+              <th>Content</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="4">Loading banners...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Users Section -->
+      <div id="usersSection" style="display: none;">
+        <h2>Users Management</h2>
+        <p>Users management functionality coming soon...</p>
+      </div>
+
+      <!-- Settings Section -->
+      <div id="settingsSection" style="display: none;">
+        <h2>Settings</h2>
+        <p>Settings functionality coming soon...</p>
+      </div>
+    </main>
+
+    <script>
+      const apiBase = 'http://localhost:3000/api';
+
+      const loginWrapper = document.getElementById('loginWrapper');
+      const sidebar = document.getElementById('sidebar');
+      const mainContent = document.getElementById('mainContent');
+      const adminNameSpan = document.getElementById('adminName');
+
+      let currentPage = 1;
+      let maxPages = 1;
+
+      async function editPost(id) {
+        try {
+          const res = await fetch(`${apiBase}/posts/${id}`);
+          if (!res.ok) throw new Error("Post not found");
+          const post = await res.json();
+
+          // Redirect to new-post.html with edit parameters
+          const params = new URLSearchParams();
+          params.append('edit', 'true');
+          params.append('id', post._id);
+          params.append('title', post.title);
+          params.append('content', post.content);
+          params.append('description', post.description || '');
+          if (post.section) {
+            if (Array.isArray(post.section)) {
+              post.section.forEach(section => params.append('section', section));
+            } else {
+              params.append('section', post.section);
+            }
+          }
+          params.append('image', post.image || '');
+
+          window.location.href = `new-post.html?${params.toString()}`;
+        } catch (err) {
+          alert("Error loading post for editing");
+          console.error(err);
+        }
+      }
+
+      function checkLogin() {
+        const loggedIn = localStorage.getItem('adminLoggedIn');
+        if (loggedIn === 'true') {
+          loginWrapper.style.display = 'none';
+          sidebar.style.display = 'flex';
+          mainContent.style.display = 'flex';
+          loadPosts();
+        } else {
+          loginWrapper.style.display = 'flex';
+          sidebar.style.display = 'none';
+          mainContent.style.display = 'none';
+        }
+      }
+
+      function handleLogin() {
+        const username = document.getElementById('loginUsername').value.trim();
+        const password = document.getElementById('loginPassword').value.trim();
+
+        if (username === 'admin' && password === 'admin123') {
+          localStorage.setItem('adminLoggedIn', 'true');
+          checkLogin();
+        } else {
+          alert('Invalid credentials!');
+        }
+      }
+
+      function handleLogout() {
+        localStorage.removeItem('adminLoggedIn');
+        checkLogin();
+      }
+
+
+      async function deletePost(id) {
+        if (!confirm("Are you sure you want to delete this post?")) return;
+        try {
+          const res = await fetch(`${apiBase}/posts/${id}`, { method: "DELETE" });
+          if (res.ok) {
+            alert("Post deleted!");
+            loadPosts();
+          } else {
+            alert("Failed to delete");
+          }
+        } catch (err) {
+          alert("Error deleting post");
+          console.error(err);
+        }
+      }
+
+      async function loadPosts(page = 1) {
+        try {
+          const limit = 10;
+          const res = await fetch(`${apiBase}/posts?page=${page}&limit=${limit}`);
+          const data = await res.json();
+
+          const posts = data.posts || [];
+          const totalPosts = data.total || 0;
+          const totalPages = Math.ceil(totalPosts / limit);
+
+          document.getElementById('totalPosts').textContent = totalPosts;
+          document.getElementById('pageInfo').textContent = `Page ${page} of ${totalPages}`;
+
+          const tbody = document.querySelector("#postsTable tbody");
+          tbody.innerHTML = ""; // Clear existing rows
+
+          if (posts.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding:30px; color:#999;">No posts found.</td></tr>`;
+            return;
+          }
+
+          posts.forEach((post) => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+    <td><img src="/IMAGE/${post.image}" width="100" /></td>
+          <td>${post.title}</td>
+          <td>${post.content}</td>
+          <td>
+            <button class="btn edit" onclick="editPost('${post._id}')">Edit</button>
+            <button class="btn delete" onclick="deletePost('${post._id}')">Delete</button>
+          </td>
+        `;
+            tbody.appendChild(tr);
+          });
+
+          // Enable/disable pagination buttons
+          document.getElementById('prevBtn').disabled = page <= 1;
+          document.getElementById('nextBtn').disabled = page >= totalPages;
+
+          // Update button styles based on disabled state
+          document.getElementById('prevBtn').style.backgroundColor = page <= 1 ? '#adb5bd' : '#6c757d';
+          document.getElementById('nextBtn').style.backgroundColor = page >= totalPages ? '#adb5bd' : '#6c757d';
+
+          // Store current page for button handlers
+          currentPage = page;
+          maxPages = totalPages;
+
+        } catch (err) {
+          console.error("Failed to load posts", err);
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        checkLogin();
+        loadPosts();
+
+        // Pagination event listeners
+        document.getElementById('prevBtn').addEventListener('click', () => {
+          if (currentPage > 1) {
+            loadPosts(currentPage - 1);
+          }
+        });
+
+        document.getElementById('nextBtn').addEventListener('click', () => {
+          if (currentPage < maxPages) {
+            loadPosts(currentPage + 1);
+          }
+        });
+      });
+    </script>
+
+
+
+  </body>
+
+</html>

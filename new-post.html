@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Add New Post</title>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+            rel="stylesheet" />
+        <!-- <link rel="stylesheet" href="style.css" /> -->
+        <style>
+            /* Admin Panel Specific Styles for New Post Page */
+            body {
+                font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+                background: #f5f7fa;
+                color: #333;
+                display: flex;
+                margin: 0;
+                padding: 0;
+            }
+
+            /* Sidebar */
+            .sidebar {
+                width: 189px;
+                background: linear-gradient(135deg, #4f51c0, #353a9b);
+                color: #f0f2ff;
+                display: flex;
+                flex-direction: column;
+                padding: 30px 25px;
+                box-shadow: 4px 0 15px rgba(53, 58, 155, 0.25);
+            }
+
+            .sidebar h2 {
+                font-weight: 800;
+                font-size: 28px;
+                letter-spacing: 1.4px;
+                margin-bottom: 40px;
+                user-select: none;
+            }
+
+            .sidebar nav a {
+                color: #c3c9ffcc;
+                display: block;
+                padding: 14px 20px;
+                font-weight: 600;
+                font-size: 15px;
+                margin-bottom: 12px;
+                border-radius: 8px;
+                text-decoration: none;
+                transition: background-color 0.3s, color 0.3s;
+                box-shadow: inset 0 0 0 0 transparent;
+            }
+
+            .sidebar nav a.active,
+            .sidebar nav a:hover {
+                background: rgba(255, 255, 255, 0.15);
+                color: #fff;
+                box-shadow: inset 3px 0 0 0 #fff;
+            }
+
+            /* Main Content */
+            .main-content {
+                flex-grow: 1;
+                padding: 35px 50px;
+                overflow-y: auto;
+                display: flex;
+                flex-direction: column;
+            }
+
+            /* Header */
+            .header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 40px;
+            }
+
+            .header h1 {
+                font-weight: 800;
+                font-size: 32px;
+                color: #353a9b;
+            }
+
+            /* Form Styling */
+            form {
+                background: white;
+                padding: 30px;
+                border-radius: 12px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                max-width: 800px;
+            }
+
+            label {
+                display: block;
+                font-weight: 600;
+                color: #454d6b;
+                margin-bottom: 8px;
+                font-size: 14px;
+            }
+
+            input[type="text"],
+            textarea {
+                width: 96%;
+                padding: 12px;
+                border: 2px solid #e2e8f0;
+                border-radius: 8px;
+                font-size: 16px;
+                margin-bottom: 20px;
+                font-family: inherit;
+                transition: border-color 0.3s ease;
+            }
+
+            input[type="text"]:focus,
+            textarea:focus {
+                outline: none;
+                border-color: #4f51c0;
+            }
+
+            textarea {
+                min-height: 120px;
+                resize: vertical;
+            }
+
+            .checkbox-container {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+                margin-bottom: 20px;
+            }
+
+            .checkbox-column {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .checkbox-container label {
+                display: flex;
+                align-items: center;
+                font-weight: 500;
+                cursor: pointer;
+            }
+
+            .checkbox-container input[type="checkbox"] {
+                margin-right: 10px;
+                width: 18px;
+                height: 18px;
+            }
+
+            input[type="file"] {
+                margin-bottom: 20px;
+            }
+
+            button[type="submit"] {
+                background: linear-gradient(135deg, #c8102e, #a50d25);
+                color: white;
+                border: none;
+                padding: 15px 30px;
+                border-radius: 8px;
+                font-weight: 600;
+                font-size: 16px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                margin-top: 4%;
+            }
+
+            button[type="submit"]:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 15px rgba(200, 16, 46, 0.3);
+            }
+
+            button[type="submit"]:disabled {
+                opacity: 0.7;
+                cursor: not-allowed;
+                transform: none;
+            }
+
+            /* Responsive */
+            @media (max-width: 900px) {
+                body {
+                    flex-direction: column;
+                }
+
+                .sidebar {
+                    width: 100%;
+                    flex-direction: row;
+                    padding: 15px;
+                    box-shadow: none;
+                    justify-content: space-around;
+                }
+
+                .sidebar h2 {
+                    display: none;
+                }
+
+                .sidebar nav a {
+                    padding: 10px 15px;
+                    font-size: 13px;
+                    margin: 0 6px;
+                    border-radius: 6px;
+                }
+
+                .main-content {
+                    padding: 25px 20px;
+                }
+
+                .checkbox-container {
+                    grid-template-columns: 1fr;
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar" aria-label="Sidebar Navigation">
+            <h2>Admin Panel</h2>
+            <nav role="navigation">
+                <a href="./admin.html">Dashboard</a>
+                <a href="./new-post.html">Add-Posts</a>
+                <a href="./banner-admin.html">Add-Banners</a>
+                <a href="./advertisement-admin.html">Add-ADDS</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content" id="mainContent" tabindex="-1">
+            <header class="header">
+                <h1>Add New Post</h1>
+            </header>
+
+            <!-- Post Form -->
+            <form id="postForm" enctype="multipart/form-data" novalidate>
+                <label for="title">Title</label>
+                <input type="text" id="title" name="title" placeholder="Enter title" required />
+
+                <label for="content">Content</label>
+                <textarea id="content" name="content" placeholder="Write content" required></textarea>
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" placeholder="Enter short description"></textarea>
+
+                <div class="checkbox-container">
+                    <div class="checkbox-column">
+                        <label><input type="checkbox" name="section" value="magazine"> Magazine</label>
+                        <label><input type="checkbox" name="section" value="sports"> Sports</label>
+                        <label><input type="checkbox" name="section" value="politics"> Politics</label>
+                        <label><input type="checkbox" name="section" value="event"> Events</label>
+                        <label><input type="checkbox" name="section" value="tv"> Television</label>
+                        <label><input type="checkbox" name="section" value="Corporate"> Corporate</label>
+                        <label><input type="checkbox" name="section" value="Awards"> Awards</label>
+                    </div>
+
+                    <div class="checkbox-column">
+                        <label><input type="checkbox" name="section" value="digital"> Digital</label>
+                        <label><input type="checkbox" name="section" value="social"> Social Media</label>
+                        <label><input type="checkbox" name="section" value="advertising"> Advertising</label>
+                        <label><input type="checkbox" name="section" value="marketing"> Marketing</label>
+                        <label><input type="checkbox" name="section" value="brands"> Brands</label>
+                        <label><input type="checkbox" name="section" value="Venue"> Venue</label>
+                    </div>
+                </div>
+
+                <!-- Selected Sections Display -->
+                <div id="selectedSectionsDisplay"
+                    style="margin-top: 15px; padding: 10px; background: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef;">
+                    <div style="font-weight: 600; color: #495057; margin-bottom: 8px;">Selected Sections:</div>
+                    <div id="selectedSectionsList" style="color: #6c757d; font-size: 14px;">No sections selected</div>
+                    <div id="selectedCount" style="font-size: 12px; color: #868e96; margin-top: 5px;">Total Selected: 0
+                    </div>
+                    <div id="originalSections"
+                        style="margin-top: 8px; font-size: 11px; color: #28a745; font-style: italic; display: none;">
+                        <strong>Original Sections:</strong> <span id="originalSectionsList"></span>
+                    </div>
+                </div>
+                <label for="image">Image</label>
+                <input type="file" id="image" name="image" accept="image/*" />
+                <img id="imagePreview" style="display:none; max-width:200px; margin-top:10px; border-radius:8px;"
+                    alt="Image Preview" />
+
+                <input type="hidden" id="postId" name="id" />
+                <button type="submit">Add Post</button>
+            </form>
+        </main>
+
+        <script>
+            const apiBase = 'http://localhost:3000/api';
+            const postForm = document.getElementById('postForm');
+            const imageInput = document.getElementById('image');
+            const imagePreview = document.getElementById('imagePreview');
+            const postIdInput = document.getElementById('postId');
+            const submitBtn = postForm.querySelector('button[type="submit"]');
+
+            // Check if we're in edit mode
+            const urlParams = new URLSearchParams(window.location.search);
+            const isEditMode = urlParams.get('edit') === 'true';
+
+            // Image preview functionality
+            imageInput.addEventListener('change', () => {
+                if (imageInput.files && imageInput.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        imagePreview.src = e.target.result;
+                        imagePreview.style.display = 'block';
+                    };
+                    reader.readAsDataURL(imageInput.files[0]);
+                } else {
+                    imagePreview.style.display = 'none';
+                    imagePreview.src = '';
+                }
+            });
+
+            // Load post data for editing
+            // Load post data for editing
+            async function loadPostForEditing() {
+                const id = urlParams.get('id');
+                if (!id) return;
+
+                try {
+                    const res = await fetch(`${apiBase}/posts/${id}`);
+                    const post = await res.json();
+
+                    document.getElementById('title').value = post.title || '';
+                    document.getElementById('content').value = post.content || '';
+                    document.getElementById('description').value = post.description || '';
+                    postIdInput.value = post._id;
+
+                    // Tick sections
+                    const checkboxes = document.querySelectorAll('input[name="section"]');
+                    checkboxes.forEach(cb => {
+                        cb.checked = post.section.some(s => s.toLowerCase() === cb.value.toLowerCase());
+                    });
+
+                    // Image preview
+                    if (post.image) {
+                        imagePreview.src = `/IMAGE/${post.image}`;
+                        imagePreview.style.display = 'block';
+                    }
+
+                } catch (err) {
+                    console.error("Failed to load post:", err);
+                }
+            } // ✅ Correct closing bracket
+
+
+            // Form submission
+            postForm.addEventListener("submit", async (e) => {
+                e.preventDefault();
+
+                if (!isEditMode && !imageInput.files.length) {
+                    alert("Please upload an image.");
+                    return;
+                }
+
+                const formData = new FormData(postForm);
+                const id = postIdInput.value;
+
+                submitBtn.disabled = true;
+                submitBtn.textContent = isEditMode ? "Updating..." : "Adding...";
+
+                try {
+                    let res;
+                    if (isEditMode && id) {
+                        res = await fetch(`${apiBase}/posts/${id}`, {
+                            method: 'PUT',
+                            body: formData
+                        });
+                    } else {
+                        res = await fetch(`${apiBase}/posts`, {
+                            method: 'POST',
+                            body: formData
+                        });
+                    }
+
+                    if (res.ok) {
+                        alert(isEditMode ? "Post updated successfully!" : "Post added successfully!");
+                        if (!isEditMode) {
+                            postForm.reset();
+                            imagePreview.style.display = "none";
+                        }
+                        submitBtn.textContent = isEditMode ? "Update Post" : "Add Post";
+
+                        // Redirect back to admin after 2 seconds
+                        setTimeout(() => {
+                            window.location.href = 'admin.html';
+                        }, 2000);
+                    } else {
+                        const data = await res.json();
+                        alert(data.message || (isEditMode ? "Failed to update post" : "Failed to add post"));
+                    }
+                } catch (err) {
+                    alert(isEditMode ? "Error updating post" : "Error adding post");
+                    console.error(err);
+                } finally {
+                    submitBtn.disabled = false;
+                }
+            });
+
+            // Check login status
+            function checkLogin() {
+                const loggedIn = localStorage.getItem('adminLoggedIn');
+                if (loggedIn !== 'true') {
+                    window.location.href = 'admin.html';
+                }
+            }
+
+            // Function to update selected sections display
+            function updateSelectedSectionsDisplay() {
+                const checkboxes = document.querySelectorAll('input[name="section"]:checked');
+                const selectedSectionsList = document.getElementById('selectedSectionsList');
+                const selectedCount = document.getElementById('selectedCount');
+
+                console.log('=== UPDATE DISPLAY DEBUG ===');
+                console.log('Total checkboxes found:', checkboxes.length);
+                console.log('Selected sections list element:', selectedSectionsList);
+                console.log('Selected count element:', selectedCount);
+
+                // Debug: Log all checkboxes (checked and unchecked)
+                const allCheckboxes = document.querySelectorAll('input[name="section"]');
+                console.log('All checkboxes:');
+                allCheckboxes.forEach((cb, index) => {
+                    console.log(`Checkbox ${index}: ${cb.value} = ${cb.checked}`);
+                });
+
+                if (!selectedSectionsList || !selectedCount) {
+                    console.error('Display elements not found!');
+                    return;
+                }
+
+                if (checkboxes.length === 0) {
+                    selectedSectionsList.textContent = 'No sections selected';
+                    selectedCount.textContent = 'Total Selected: 0';
+                    console.log('Set to: No sections selected, Total: 0');
+                    return;
+                }
+
+                // Get section labels
+                const selectedLabels = Array.from(checkboxes).map(cb => {
+                    const label = cb.closest('label').textContent.trim();
+                    console.log('Processing checkbox:', cb.value, 'Label:', label);
+                    return label;
+                });
+
+                console.log('Final selected labels:', selectedLabels);
+                const displayText = selectedLabels.join(', ');
+                const countText = `Total Selected: ${checkboxes.length}`;
+
+                selectedSectionsList.textContent = displayText;
+                selectedCount.textContent = countText;
+
+                console.log('Display updated to:', displayText);
+                console.log('Count updated to:', countText);
+                console.log('=== END DEBUG ===');
+            }
+
+            document.addEventListener("DOMContentLoaded", () => {
+                checkLogin();
+                if (isEditMode) {
+                    loadPostForEditing();
+                }
+
+                // Add change listeners to all section checkboxes
+                const sectionCheckboxes = document.querySelectorAll('input[name="section"]');
+                sectionCheckboxes.forEach(checkbox => {
+                    checkbox.addEventListener('change', updateSelectedSectionsDisplay);
+                });
+
+                // Initial update of display
+                updateSelectedSectionsDisplay();
+            });
+        </script>
+    </body>
+
+</html>

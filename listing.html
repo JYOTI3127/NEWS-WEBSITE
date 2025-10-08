@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8" />
+    <title>Posts Listing</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+      }
+
+      ul {
+        list-style-type: none;
+        padding: 0;
+      }
+
+      li {
+        margin-bottom: 10px;
+      }
+
+      a {
+        text-decoration: none;
+        color: #c8102e;
+        font-weight: bold;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>All Posts</h1>
+    <ul id="posts-list">
+      Loading posts...
+    </ul>
+
+    <script>
+      // Example: Posts data (in real app, fetch from API)
+      const posts = [
+        { id: 1, title: "Post One" },
+        { id: 2, title: "Post Two" },
+        { id: 3, title: "Post Three" }
+      ];
+
+      const ul = document.getElementById('posts-list');
+      ul.innerHTML = '';
+
+      posts.forEach(post => {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = `post-details.html?id=${post.id}`;
+        a.textContent = post.title;
+        li.appendChild(a);
+        ul.appendChild(li);
+      });
+    </script>
+  </body>
+
+</html>

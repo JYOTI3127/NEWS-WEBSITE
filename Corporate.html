@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>CORPORATE page </title>
+        <link rel="stylesheet" href="style.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+        <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    </head>
+
+    <body>
+        <div id="header"></div>
+
+        <!DOCTYPE html>
+        <html lang="en">
+
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Corporate page </title>
+                <link rel="stylesheet" href="style.css" />
+                <link rel="stylesheet"
+                    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+                <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+            </head>
+
+            <body>
+                <div id="header"></div>
+                <!-- /// -->
+                <section class="tv-hero-bg">
+                    <video autoplay muted loop playsinline class="tv-bg-video">
+                        <source src="./IMAGE/CORPORATE EVENT VIDEO.mp4" type="video/mp4" />
+                    </video>
+                </section>
+                <!-- /// -->
+                <section class="tv-container">
+                    <div class="tv-left">
+                        <!-- <h2>Television News</h2> -->
+                        <div id="televisionNewsSection" class="tv-news-section"></div>
+                    </div>
+
+                    <div class="tv-right">
+                        <div class="tv-ad">
+                            <video id="sidebarVideo" class="sidebar-video" controls muted playsinline>
+                                <source
+                                    src="https://images1.afaqsnewsletter.com/mailers/daily/2025/07/29/mayur_hola_rhs_banner.mp4"
+                                    type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+
+                        <div class="tv-articles">
+                            <h3>Articles</h3>
+                            <div id="magazineArticles"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <div id="footer"></div>
+            </body>
+
+
+
+
+        </html>
+
+
+        <div id="footer"></div>
+    </body>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <!-- ///// -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            AOS.init({ duration: 500, once: false });
+
+            fetch('header.html')
+                .then(res => res.text())
+                .then(html => {
+                    document.getElementById('header').innerHTML = html;
+
+                    const menuToggle = document.getElementById('menu-toggle');
+                    const sidebar = document.getElementById('sidebar');
+                    const overlay = document.getElementById('overlay');
+                    const closeSidebar = document.getElementById('close-sidebar');
+
+                    menuToggle?.addEventListener('click', () => {
+                        sidebar?.classList.add('open');
+                        overlay?.classList.add('active');
+                        document.body.style.overflow = 'hidden';
+                    });
+
+                    const hideSidebar = () => {
+                        sidebar?.classList.remove('open');
+                        overlay?.classList.remove('active');
+                        document.body.style.overflow = '';
+                    };
+
+                    closeSidebar?.addEventListener('click', hideSidebar);
+                    overlay?.addEventListener('click', hideSidebar);
+
+                    const submenuToggles = sidebar?.querySelectorAll('.submenu-toggle') || [];
+                    submenuToggles.forEach(btn => {
+                        btn.addEventListener('click', e => {
+                            e.stopPropagation();
+                            const submenu = btn.parentElement.nextElementSibling;
+                            submenu?.classList.toggle('open');
+                        });
+                    });
+
+                    AOS.refresh();
+                })
+                .catch(err => console.error('Header load error:', err));
+
+            fetch('footer.html')
+                .then(res => res.text())
+                .then(html => {
+                    document.getElementById('footer').innerHTML = html;
+                    AOS.refresh();
+                })
+                .catch(err => console.error('Footer load error:', err));
+
+            function updateTime() {
+                const now = new Date();
+                const timeString = now.toLocaleTimeString('en-IN', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: true
+                });
+                const liveTime = document.getElementById('live-time');
+                if (liveTime) {
+                    liveTime.textContent = timeString;
+                }
+            }
+            setInterval(updateTime, 1000);
+            updateTime();
+        });
+    </script>
+
+
+    <script>
+        fetch('http://localhost:3000/api/posts/section/Corporate')
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                const container = document.getElementById('televisionNewsSection');
+
+                if (!Array.isArray(data)) {
+                    console.error("Data is not an array");
+                    return;
+                }
+
+                container.innerHTML = data.map(post => `
+        <a href="post-details.html?id=${post._id}"<div class="tv-card">
+        <img src="http://localhost:3000/IMAGE/${post.image || 'default.jpg'}" alt="${post.title}" />
+        <h3>${post.title}</h3>
+        <p>${post.content}</p>
+      </div>
+      </a>
+    `).join('');
+            })
+            .catch(err => console.error("Error:", err));
+
+
+        fetch('http://localhost:3000/api/posts/section/magazine')
+            .then(response => response.json())
+            .then(data => {
+                // data khud hi array hai, koi posts property nahi
+                if (!Array.isArray(data)) {
+                    console.error("Magazine data is not an array");
+                    return;
+                }
+
+                const container = document.getElementById('magazineArticles');
+
+                const limitedPosts = data.slice(0, 6);
+
+                container.innerHTML = limitedPosts.map(post => `
+        <a href="post-details.html?id=${post._id}"<div class="article">
+        <img src="http://localhost:3000/IMAGE/${post.image || 'default.jpg'}" alt="${post.title}" />
+        <div class="article-text">
+          <h5>${post.title}</h5>
+          <p>${post.content || ''}</p>
+        </div>
+      </div>
+      </a>
+    `).join('');
+            })
+            .catch(err => console.error("Error:", err));
+
+
+    </script>
+
+    <!-- ////video js//// -->
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const video = document.getElementById('sidebarVideo');
+            if (video) {
+                video.play().catch(err => {
+                    console.warn('Autoplay failed:', err);
+                });
+            }
+        });
+    </script>
+
+
+
+
+</html>

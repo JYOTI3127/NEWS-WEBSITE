@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>MEDIA PAGE</title>
+        <link rel="stylesheet" href="style.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
+
+        <!-- AOS CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    </head>
+
+    <body>
+        <div id="header"></div>
+        <section class="news-hero" id="newsHero">
+            <video autoplay muted loop playsinline class="news-video-bg">
+                <source src="./IMAGE/4874629-hd_1920_1080_25fps.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="news-overlay"></div>
+        </section>
+
+        <section id="sports-section">
+            <div class="section-header">
+                <h2><a href="./sport.html">Television</a></h2>
+                <a href="./sport.html" class="see-all-btnn">See All Details</a>
+            </div>
+            <section id="televisionNewsSection" class="tv-news-layout">
+                <div class="tv-news-grid">
+                    <!-- Featured News -->
+                    <div class="featured-news">...</div>
+
+                    <!-- Secondary News -->
+                    <div class="secondary-news">...</div>
+                </div>
+
+                <div class="tv-news-cards" id="sports-container">
+                    <!-- Multiple .tv-card here -->
+                </div>
+            </section>
+        </section>
+
+        <!-- digital -->
+        <section id="event-section">
+            <div class="section-header">
+                <h2><a href="./digital.html">Digital</a></h2>
+                <a href="./digital.html" class="see-all-btnn">See All Details</a>
+            </div>
+            <section class="news-section">
+                <div class="news-column left" id="leftColumn"></div>
+                <div class="news-column center" id="centerColumn"></div>
+                <div class="news-column right" id="rightColumn"></div>
+            </section>
+        </section>
+
+        <!-- social media -->
+        <section id="politics-section">
+            <div class="section-header">
+                <h2><a href="./social.html">Social Media</a></h2>
+                <a href="./social.html" class="see-all-btnn">See All Details</a>
+            </div>
+            <section class="social-main-container" id="socialMainContainer">
+                <div class="left-main" id="leftMain"></div>
+                <div class="right-grid" id="rightGrid"></div>
+            </section>
+        </section>
+
+
+        <!-- // -->
+        <div id="footer"></div>
+        <script src="./script.js" defer></script>
+        <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                AOS.init({
+                    duration: 500,
+                    once: false
+                });
+
+                /* --- HEADER LOAD --- */
+                fetch('header.html')
+                    .then(res => res.text())
+                    .then(html => {
+                        document.getElementById('header').innerHTML = html;
+
+                        // Sidebar Elements
+                        const menuToggle = document.getElementById('menu-toggle');
+                        const sidebar = document.getElementById('sidebar');
+                        const overlay = document.getElementById('overlay');
+                        const closeSidebar = document.getElementById('close-sidebar');
+
+                        menuToggle?.addEventListener('click', () => {
+                            sidebar?.classList.add('open');
+                            overlay?.classList.add('active');
+                            document.body.style.overflow = 'hidden';
+                        });
+
+                        const hideSidebar = () => {
+                            sidebar?.classList.remove('open');
+                            overlay?.classList.remove('active');
+                            document.body.style.overflow = '';
+                        };
+                        closeSidebar?.addEventListener('click', hideSidebar);
+                        overlay?.addEventListener('click', hideSidebar);
+
+                        const submenuToggles = sidebar?.querySelectorAll('.submenu-toggle') || [];
+                        submenuToggles.forEach(btn => {
+                            btn.addEventListener('click', e => {
+                                e.stopPropagation();
+                                const submenu = btn.parentElement.nextElementSibling;
+                                submenu?.classList.toggle('open');
+                            });
+                        });
+
+                        // Optional scroll
+                        const mainSection = document.getElementById('main-content');
+                        if (mainSection) {
+                            mainSection.scrollIntoView({ behavior: 'smooth' });
+                        }
+
+                        // ✅ Refresh AOS after header load
+                        AOS.refresh();
+                    })
+                    .catch(err => console.error('Header load error:', err));
+
+                /* --- FOOTER LOAD --- */
+                fetch('footer.html')
+                    .then(res => res.text())
+                    .then(html => {
+                        document.getElementById('footer').innerHTML = html;
+
+                        // ✅ Refresh AOS after footer load
+                        AOS.refresh();
+                    })
+                    .catch(err => console.error('Footer load error:', err));
+
+                // Time update
+                function updateTime() {
+                    const now = new Date();
+                    const timeString = now.toLocaleTimeString('en-IN', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit',
+                        hour12: true
+                    });
+                    const liveTime = document.getElementById('live-time');
+                    if (liveTime) {
+                        liveTime.textContent = timeString;
+                    }
+                }
+                setInterval(updateTime, 1000);
+                updateTime();
+            });
+        </script>
+    </body>
+
+</html>

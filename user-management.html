@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>User Management Dashboard</title>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+            rel="stylesheet" />
+        <style>
+            /* Admin Panel Specific Styles for User Management Page */
+            body {
+                font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+                background: #f5f7fa;
+                color: #333;
+                display: flex;
+                margin: 0;
+                padding: 0;
+            }
+
+            /* Sidebar */
+            .sidebar {
+                width: 189px;
+                background: linear-gradient(135deg, #4f51c0, #353a9b);
+                color: #f0f2ff;
+                display: flex;
+                flex-direction: column;
+                padding: 30px 25px;
+                box-shadow: 4px 0 15px rgba(53, 58, 155, 0.25);
+                height: 90vh;
+            }
+
+            .sidebar h2 {
+                font-weight: 800;
+                font-size: 28px;
+                letter-spacing: 1.4px;
+                margin-bottom: 40px;
+                user-select: none;
+            }
+
+            .sidebar nav a {
+                color: #c3c9ffcc;
+                display: block;
+                padding: 14px 20px;
+                font-weight: 600;
+                font-size: 15px;
+                margin-bottom: 12px;
+                border-radius: 8px;
+                text-decoration: none;
+                transition: background-color 0.3s, color 0.3s;
+                box-shadow: inset 0 0 0 0 transparent;
+            }
+
+            .sidebar nav a.active,
+            .sidebar nav a:hover {
+                background: rgba(255, 255, 255, 0.15);
+                color: #fff;
+                box-shadow: inset 3px 0 0 0 #fff;
+            }
+
+            /* Main Content */
+            .main-content {
+                flex-grow: 1;
+                padding: 35px 50px;
+                overflow-y: auto;
+                display: flex;
+                flex-direction: column;
+            }
+
+            /* Header */
+            .header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 40px;
+            }
+
+            .header h1 {
+                font-weight: 800;
+                font-size: 32px;
+                color: #353a9b;
+            }
+
+            /* User Management Styles */
+            .user-management-container {
+                max-width: 1000px;
+            }
+
+            .users-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 30px;
+            }
+
+            .users-header h1 {
+                color: #353a9b;
+                font-size: 2.5rem;
+                font-weight: 800;
+            }
+
+            .refresh-btn {
+                background: linear-gradient(135deg, #c8102e, #a50d25);
+                color: white;
+                border: none;
+                padding: 12px 20px;
+                border-radius: 8px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+
+            .refresh-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 15px rgba(200, 16, 46, 0.3);
+            }
+
+            .users-stats {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 20px;
+                margin-bottom: 30px;
+            }
+
+            .stat-card {
+                background: white;
+                padding: 25px;
+                border-radius: 12px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                text-align: center;
+            }
+
+            .stat-card h3 {
+                color: #6b6f8c;
+                font-size: 1rem;
+                margin-bottom: 10px;
+                font-weight: 600;
+            }
+
+            .stat-card .number {
+                font-size: 2.5rem;
+                font-weight: 800;
+                color: #353a9b;
+            }
+
+            .users-table-container {
+                background: white;
+                border-radius: 12px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                overflow: hidden;
+            }
+
+            .users-table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            .users-table th {
+                background: #f8fafc;
+                padding: 15px;
+                text-align: left;
+                font-weight: 600;
+                color: #454d6b;
+                border-bottom: 2px solid #e2e8f0;
+            }
+
+            .users-table td {
+                padding: 15px;
+                border-bottom: 1px solid #e2e8f0;
+                color: #5a5f7a;
+            }
+
+            .users-table tr:hover {
+                background: #f8fafc;
+            }
+
+            .last-login {
+                font-size: 0.9rem;
+                color: #6b6f8c;
+            }
+
+            .status-active {
+                background: #10b981;
+                color: white;
+                padding: 4px 12px;
+                border-radius: 20px;
+                font-size: 0.8rem;
+                font-weight: 600;
+            }
+
+            .status-inactive {
+                background: #ef4444;
+                color: white;
+                padding: 4px 12px;
+                border-radius: 20px;
+                font-size: 0.8rem;
+                font-weight: 600;
+            }
+
+            .loading {
+                text-align: center;
+                padding: 50px;
+                color: #6b6f8c;
+            }
+
+            .error {
+                text-align: center;
+                padding: 50px;
+                color: #ef4444;
+            }
+
+            .action-btn {
+                background: #4f51c0;
+                color: white;
+                border: none;
+                padding: 8px 15px;
+                border-radius: 6px;
+                font-weight: 500;
+                cursor: pointer;
+                margin-right: 5px;
+                transition: all 0.3s ease;
+            }
+
+            .action-btn:hover {
+                background: #353a9b;
+            }
+
+            .delete-btn {
+                background: #ef4444;
+            }
+
+            .delete-btn:hover {
+                background: #dc2626;
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .fade-in {
+                animation: fadeIn 0.5s ease;
+            }
+
+            .logout-btn {
+                background: #c8102e;
+                padding: 8px 14px;
+                color: #fff;
+                border-radius: 8px;
+                font-weight: 600;
+                border: none;
+                cursor: pointer;
+                font-size: 14px;
+                transition: background-color 0.3s ease;
+            }
+
+            .logout-btn:hover {
+                background: #a50d25;
+            }
+
+            /* Welcome Section */
+            .welcome-section {
+                background: linear-gradient(135deg, #4f51c0, #353a9b);
+                color: white;
+                padding: 30px;
+                border-radius: 12px;
+                margin-bottom: 30px;
+                text-align: center;
+            }
+
+            .welcome-section h2 {
+                font-size: 2rem;
+                font-weight: 700;
+                margin-bottom: 10px;
+            }
+
+            .welcome-section p {
+                font-size: 1.1rem;
+                opacity: 0.9;
+            }
+
+            /* Quick Actions */
+            .quick-actions {
+                background: white;
+                padding: 25px;
+                border-radius: 12px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                margin-bottom: 30px;
+            }
+
+            .quick-actions h3 {
+                color: #353a9b;
+                font-size: 1.3rem;
+                font-weight: 600;
+                margin-bottom: 20px;
+            }
+
+            .action-buttons {
+                display: flex;
+                gap: 15px;
+                flex-wrap: wrap;
+            }
+
+            .action-btn.primary {
+                background: linear-gradient(135deg, #4f51c0, #353a9b);
+                padding: 12px 20px;
+                font-weight: 600;
+            }
+
+            .action-btn.secondary {
+                background: #f8fafc;
+                color: #4f51c0;
+                border: 2px solid #4f51c0;
+                padding: 10px 18px;
+            }
+
+            .action-btn.secondary:hover {
+                background: #4f51c0;
+                color: white;
+            }
+
+            /* Responsive */
+            @media (max-width: 900px) {
+                body {
+                    flex-direction: column;
+                }
+
+                .sidebar {
+                    width: 100%;
+                    flex-direction: row;
+                    padding: 15px;
+                    box-shadow: none;
+                    justify-content: space-around;
+                }
+
+                .sidebar h2 {
+                    display: none;
+                }
+
+                .sidebar nav a {
+                    padding: 10px 15px;
+                    font-size: 13px;
+                    margin: 0 6px;
+                    border-radius: 6px;
+                }
+
+                .main-content {
+                    padding: 25px 20px;
+                }
+
+                .users-stats {
+                    grid-template-columns: 1fr;
+                }
+
+                .users-table {
+                    font-size: 14px;
+                }
+
+                .users-table th,
+                .users-table td {
+                    padding: 10px;
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar" aria-label="Sidebar Navigation">
+            <h2>Admin Panel</h2>
+            <nav role="navigation">
+                <a href="./admin.html" aria-current="page">Dashboard</a>
+                <a href="new-post.html">Add New Post</a>
+                <a href="./user-management.html">Users</a>
+                <a href="./banner-management.html">Banner Management</a>
+                <a href="./advertisement-management.html">Advertisement Management</a>
+                <!-- <a href="#">Settings</a> -->
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content" id="mainContent" tabindex="-1">
+
+            <div class="user-management-container">
+                <div class="users-header">
+                    <h1>Users Overview</h1>
+                    <button class="refresh-btn" onclick="loadUsers()">
+                        ↻ Refresh Data
+                    </button>
+                </div>
+
+                <!-- Quick Actions -->
+
+                <div class="users-stats">
+                    <div class="stat-card fade-in">
+                        <h3>Total Users</h3>
+                        <div class="number" id="totalUsers">0</div>
+                    </div>
+                    <div class="stat-card fade-in">
+                        <h3>Active Today</h3>
+                        <div class="number" id="activeToday">0</div>
+                    </div>
+                    <div class="stat-card fade-in">
+                        <h3>New This Week</h3>
+                        <div class="number" id="newThisWeek">0</div>
+                    </div>
+                    <!-- <div class="stat-card fade-in">
+                    <h3>Avg. Logins</h3>
+                    <div class="number" id="avgLogins">0</div>
+                </div> -->
+                </div>
+
+                <div class="users-table-container">
+                    <table class="users-table">
+                        <thead>
+                            <tr>
+                                <th>User ID</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Last Login</th>
+                                <th>Status</th>
+                                <th>Login Count</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            <tr>
+                                <td colspan="7" class="loading">Loading users...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+
+        <script>
+            const apiBase = 'http://localhost:3000/api';
+
+            // Check login status
+            function checkLogin() {
+                const loggedIn = localStorage.getItem('adminLoggedIn');
+                if (loggedIn !== 'true') {
+                    window.location.href = 'admin.html';
+                }
+            }
+
+            function handleLogout() {
+                localStorage.removeItem('adminLoggedIn');
+                window.location.href = 'admin.html';
+            }
+
+            // Format date function
+            function formatDate(dateString) {
+                if (!dateString) return 'Never logged in';
+
+                const date = new Date(dateString);
+                const now = new Date();
+                const diffTime = Math.abs(now - date);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                if (diffDays === 1) {
+                    return 'Today';
+                } else if (diffDays === 2) {
+                    return 'Yesterday';
+                } else if (diffDays <= 7) {
+                    return `${diffDays - 1} days ago`;
+                } else {
+                    return date.toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric'
+                    });
+                }
+            }
+
+            // Load users data
+            async function loadUsers() {
+                try {
+                    const response = await fetch(`${apiBase}/users`);
+                    const users = await response.json();
+
+                    // Update stats
+                    document.getElementById('totalUsers').textContent = users.length;
+
+                    const today = new Date().toDateString();
+                    const activeTodayCount = users.filter(user => {
+                        if (!user.lastLogin) return false;
+                        return new Date(user.lastLogin).toDateString() === today;
+                    }).length;
+
+                    document.getElementById('activeToday').textContent = activeTodayCount;
+
+                    const oneWeekAgo = new Date();
+                    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+                    const newThisWeekCount = users.filter(user => {
+                        if (!user.createdAt) return false;
+                        return new Date(user.createdAt) >= oneWeekAgo;
+                    }).length;
+
+                    document.getElementById('newThisWeek').textContent = newThisWeekCount;
+
+                    // Calculate and update average logins
+                    const avgLogins = calculateAverageLogins(users);
+                    document.getElementById('avgLogins').textContent = avgLogins;
+
+                    // Update table
+                    const tbody = document.getElementById('usersTableBody');
+                    tbody.innerHTML = '';
+
+                    if (users.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="7" class="loading">No users found</td></tr>';
+                        return;
+                    }
+
+                    users.forEach(user => {
+                        const tr = document.createElement('tr');
+                        tr.className = 'fade-in';
+                        tr.innerHTML = `
+                    <td>${user._id || 'N/A'}</td>
+                    <td>${user.username || 'Unknown'}</td>
+                    <td>${user.email || 'N/A'}</td>
+                    <td class="last-login">${formatDate(user.lastLogin)}</td>
+                    <td>
+                        <span class="${user.lastLogin ? 'status-active' : 'status-inactive'}">
+                            ${user.lastLogin ? 'Active' : 'Inactive'}
+                        </span>
+                    </td>
+                    <td>${user.loginCount || 0}</td>
+                    <td>
+                        <button class="action-btn" onclick="editUser('${user._id}')">Edit</button>
+                        <button class="action-btn delete-btn" onclick="deleteUser('${user._id}')">Delete</button>
+                    </td>
+                `;
+                        tbody.appendChild(tr);
+                    });
+
+                } catch (error) {
+                    console.error('Error loading users:', error);
+                    document.getElementById('usersTableBody').innerHTML =
+                        '<tr><td colspan="7" class="error">Error loading users</td></tr>';
+                }
+            }
+
+            // Edit user function
+            function editUser(userId) {
+                alert(`Edit user functionality for ID: ${userId} would be implemented here`);
+                // This would open a modal or redirect to edit page
+            }
+
+            // Delete user function
+            async function deleteUser(userId) {
+                if (confirm('Are you sure you want to delete this user?')) {
+                    try {
+                        const response = await fetch(`${apiBase}/users/${userId}`, {
+                            method: 'DELETE'
+                        });
+
+                        if (response.ok) {
+                            alert('User deleted successfully');
+                            loadUsers(); // Refresh the user list
+                        } else {
+                            alert('Failed to delete user');
+                        }
+                    } catch (error) {
+                        console.error('Error deleting user:', error);
+                        alert('Error deleting user');
+                    }
+                }
+            }
+
+            // Quick action functions
+            function exportUsers() {
+                alert('Export users functionality would be implemented here. This would download a CSV/Excel file of all users.');
+            }
+
+            function filterActiveUsers() {
+                alert('Filter active users functionality would be implemented here. This would show only users who logged in today.');
+            }
+
+            // Calculate average logins
+            function calculateAverageLogins(users) {
+                if (users.length === 0) return 0;
+                const totalLogins = users.reduce((sum, user) => sum + (user.loginCount || 0), 0);
+                return Math.round(totalLogins / users.length);
+            }
+
+            document.addEventListener('DOMContentLoaded', () => {
+                checkLogin();
+                loadUsers();
+            });
+
+            const loginWrapper = document.getElementById('loginWrapper');
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            const adminNameSpan = document.getElementById('adminName');
+
+            async function editPost(id) {
+                try {
+                    const res = await fetch(`${apiBase}/posts/${id}`);
+                    if (!res.ok) throw new Error("Post not found");
+                    const post = await res.json();
+
+                    // Redirect to new-post.html with edit parameters
+                    const params = new URLSearchParams();
+                    params.append('edit', 'true');
+                    params.append('id', post._id);
+                    params.append('title', post.title);
+                    params.append('content', post.content);
+                    params.append('description', post.description || '');
+                    if (post.section) {
+                        if (Array.isArray(post.section)) {
+                            post.section.forEach(section => params.append('section', section));
+                        } else {
+                            params.append('section', post.section);
+                        }
+                    }
+                    params.append('image', post.image || '');
+
+                    window.location.href = `new-post.html?${params.toString()}`;
+                } catch (err) {
+                    alert("Error loading post for editing");
+                    console.error(err);
+                }
+            }
+
+            function checkLogin() {
+                const loggedIn = localStorage.getItem('adminLoggedIn');
+                if (loggedIn === 'true') {
+                    loginWrapper.style.display = 'none';
+                    sidebar.style.display = 'flex';
+                    mainContent.style.display = 'flex';
+                    loadPosts();
+                } else {
+                    loginWrapper.style.display = 'flex';
+                    sidebar.style.display = 'none';
+                    mainContent.style.display = 'none';
+                }
+            }
+
+            function handleLogin() {
+                const username = document.getElementById('loginUsername').value.trim();
+                const password = document.getElementById('loginPassword').value.trim();
+
+                if (username === 'admin' && password === 'admin123') {
+                    localStorage.setItem('adminLoggedIn', 'true');
+                    checkLogin();
+                } else {
+                    alert('Invalid credentials!');
+                }
+            }
+
+            function handleLogout() {
+                localStorage.removeItem('adminLoggedIn');
+                checkLogin();
+            }
+
+            async function deletePost(id) {
+                if (!confirm("Are you sure you want to delete this post?")) return;
+                try {
+                    const res = await fetch(`${apiBase}/posts/${id}`, { method: "DELETE" });
+                    if (res.ok) {
+                        alert("Post deleted!");
+                        loadPosts();
+                    } else {
+                        alert("Failed to delete");
+                    }
+                } catch (err) {
+                    alert("Error deleting post");
+                    console.error(err);
+                }
+            }
+
+            // Load user statistics
+            async function loadUserStats() {
+                try {
+                    const response = await fetch(`${apiBase}/users`);
+                    const users = await response.json();
+
+                    // Update user statistics
+                    document.getElementById('totalUsers').textContent = users.length;
+
+                    const today = new Date().toDateString();
+                    const activeTodayCount = users.filter(user => {
+                        if (!user.lastLogin) return false;
+                        return new Date(user.lastLogin).toDateString() === today;
+                    }).length;
+
+                    document.getElementById('activeUsers').textContent = activeTodayCount;
+
+                } catch (error) {
+                    console.error('Error loading user stats:', error);
+                    document.getElementById('totalUsers').textContent = '0';
+                    document.getElementById('activeUsers').textContent = '0';
+                }
+            }
+
+            async function loadPostCount() {
+                try {
+                    const res = await fetch(`${apiBase}/posts?page=1&limit=1`);
+                    const data = await res.json();
+                    // Handle both old and new response formats
+                    const totalPosts = data.totalPosts || (Array.isArray(data) ? data.length : 0);
+                    document.getElementById('totalPosts').textContent = totalPosts;
+                    console.log('Total posts from API:', totalPosts); // Added log for verification
+                } catch (err) {
+                    console.error("Failed to load post count", err);
+                    document.getElementById('totalPosts').textContent = '0';
+                }
+            }
+
+            // Pagination variables
+            let currentPage = 1;
+            const postsPerPage = 10;
+            let totalPosts = 0;
+            let totalPages = 0;
+
+            async function loadPosts(page = 1) {
+                try {
+                    const res = await fetch(`${apiBase}/posts?page=${page}&limit=${postsPerPage}`);
+                    const data = await res.json();
+
+                    const tbody = document.querySelector("#postsTable tbody");
+                    tbody.innerHTML = ""; // Clear existing rows
+
+                    // Handle both old and new API response formats
+                    let postsArray = data.posts || data; // Support both paginated and non-paginated responses
+
+                    if (!Array.isArray(postsArray)) {
+                        postsArray = [];
+                    }
+
+                    if (postsArray.length === 0) {
+                        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:30px; color:#999;">No posts found.</td></tr>`;
+                        return;
+                    }
+
+                    // Calculate starting serial number for current page
+                    const startIndex = (page - 1) * postsPerPage;
+
+                    postsArray.forEach((post, index) => {
+                        const tr = document.createElement("tr");
+                        tr.innerHTML = `
+                        <td>${startIndex + index + 1}</td>
+                        <td><img src="/IMAGE/${post.image}" width="100" /></td>
+                        <td>${post.title}</td>
+                        <td>${post.content}</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn edit" onclick="editPost('${post._id}')">Edit</button>
+                                <button class="btn delete" onclick="deletePost('${post._id}')">Delete</button>
+                            </div>
+                        </td>
+                    `;
+                        tbody.appendChild(tr);
+                    });
+
+                    // Update pagination variables - handle both old and new response formats
+                    currentPage = data.currentPage || page;
+                    totalPosts = data.totalPosts || postsArray.length;
+                    totalPages = data.totalPages || Math.ceil(totalPosts / postsPerPage);
+
+                    // Update pagination controls
+                    updatePaginationControls();
+
+                } catch (err) {
+                    console.error("Failed to load posts", err);
+                    const tbody = document.querySelector("#postsTable tbody");
+                    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:30px; color:#c8102e;">Error loading posts. Please try again.</td></tr>`;
+                }
+            }
+
+            function updatePaginationControls() {
+                const paginationContainer = document.getElementById('paginationControls');
+                if (!paginationContainer) return;
+
+                paginationContainer.innerHTML = '';
+
+                // Previous button
+                const prevBtn = document.createElement('button');
+                prevBtn.innerHTML = '&laquo; Previous';
+                prevBtn.className = 'pagination-btn';
+                prevBtn.disabled = currentPage === 1;
+                prevBtn.onclick = () => loadPosts(currentPage - 1);
+                paginationContainer.appendChild(prevBtn);
+
+                // Page numbers
+                const startPage = Math.max(1, currentPage - 2);
+                const endPage = Math.min(totalPages, currentPage + 2);
+
+                for (let i = startPage; i <= endPage; i++) {
+                    const pageBtn = document.createElement('button');
+                    pageBtn.textContent = i;
+                    pageBtn.className = `pagination-btn ${i === currentPage ? 'active' : ''}`;
+                    pageBtn.onclick = () => loadPosts(i);
+                    paginationContainer.appendChild(pageBtn);
+                }
+
+                // Next button
+                const nextBtn = document.createElement('button');
+                nextBtn.innerHTML = 'Next &raquo;';
+                nextBtn.className = 'pagination-btn';
+                nextBtn.disabled = currentPage === totalPages;
+                nextBtn.onclick = () => loadPosts(currentPage + 1);
+                paginationContainer.appendChild(nextBtn);
+
+                // Page info
+                const pageInfo = document.createElement('span');
+                pageInfo.className = 'page-info';
+                pageInfo.textContent = `Page ${currentPage} of ${totalPages} (${totalPosts} total posts)`;
+                paginationContainer.appendChild(pageInfo);
+            }
+
+
+
+            // Banner Management Functions
+            function showBannerManagement() {
+                document.getElementById('dashboardHeader').innerHTML = `
+                    <h1>Banner Management</h1>
+                    <div class="user-info">
+                        Welcome, <span id="adminName">Admin</span>
+                        <button class="logout-btn" onclick="handleLogout()">Logout</button>
+                    </div>
+                `;
+
+                const mainContent = document.getElementById('mainContent');
+                mainContent.innerHTML = `
+                    <header class="header" id="dashboardHeader">
+                        <h1>Banner Management</h1>
+                        <div class="user-info">
+                            Welcome, <span id="adminName">Admin</span>
+                            <button class="logout-btn" onclick="handleLogout()">Logout</button>
+                        </div>
+                    </header>
+
+                    <div style="margin-bottom: 30px;">
+                        <button class="btn edit" onclick="showAddBannerForm()" style="margin-bottom: 20px;">Add New Banner</button>
+                    </div>
+
+                    <table class="posts-table" id="bannersTable" aria-label="Banners List Table">
+                        <thead>
+                            <tr>
+                                <th>S.R</th>
+                                <th>Image</th>
+                                <th>Title</th>
+                                <th>Link</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="6">Loading banners...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                `;
+
+                loadBanners();
+            }
+
+            async function loadBanners() {
+                try {
+                    const res = await fetch(`${apiBase}/banners`);
+                    const banners = await res.json();
+
+                    const tbody = document.querySelector("#bannersTable tbody");
+                    tbody.innerHTML = "";
+
+                    if (banners.length === 0) {
+                        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:30px; color:#999;">No banners found.</td></tr>`;
+                        return;
+                    }
+
+                    banners.forEach((banner, index) => {
+                        const tr = document.createElement("tr");
+                        tr.innerHTML = `
+                            <td>${index + 1}</td>
+                            <td><img src="/IMAGE/${banner.image}" width="100" /></td>
+                            <td>${banner.title || 'No title'}</td>
+                            <td>${banner.link || 'No link'}</td>
+                            <td>${banner.active ? 'Active' : 'Inactive'}</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn edit" onclick="editBanner('${banner._id}')">Edit</button>
+                                    <button class="btn delete" onclick="deleteBanner('${banner._id}')">Delete</button>
+                                </div>
+                            </td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                } catch (err) {
+                    console.error("Failed to load banners", err);
+                    const tbody = document.querySelector("#bannersTable tbody");
+                    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:30px; color:#c8102e;">Error loading banners. Please try again.</td></tr>`;
+                }
+            }
+
+            function showAddBannerForm() {
+                const mainContent = document.getElementById('mainContent');
+                mainContent.innerHTML = `
+                    <header class="header" id="dashboardHeader">
+                        <h1>Add New Banner</h1>
+                        <div class="user-info">
+                            Welcome, <span id="adminName">Admin</span>
+                            <button class="logout-btn" onclick="handleLogout()">Logout</button>
+                        </div>
+                    </header>
+
+                    <div style="background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); max-width: 600px; margin: 0 auto;">
+                        <form id="bannerForm" enctype="multipart/form-data">
+                            <div style="margin-bottom: 20px;">
+                                <label style="display: block; margin-bottom: 8px; font-weight: 600;">Banner Image:</label>
+                                <input type="file" id="bannerImage" name="image" accept="image/*" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
+                            </div>
+                            <div style="margin-bottom: 20px;">
+                                <label style="display: block; margin-bottom: 8px; font-weight: 600;">Title (Optional):</label>
+                                <input type="text" id="bannerTitle" name="title" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
+                            </div>
+                            <div style="margin-bottom: 20px;">
+                                <label style="display: block; margin-bottom: 8px; font-weight: 600;">Link (Optional):</label>
+                                <input type="url" id="bannerLink" name="link" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
+                            </div>
+                            <div style="margin-bottom: 20px;">
+                                <label style="display: block; margin-bottom: 8px; font-weight: 600;">Active:</label>
+                                <input type="checkbox" id="bannerActive" name="active" checked>
+                            </div>
+                            <div style="display: flex; gap: 10px;">
+                                <button type="submit" class="btn edit">Save Banner</button>
+                                <button type="button" class="btn delete" onclick="showBannerManagement()">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                `;
+
+                document.getElementById('bannerForm').addEventListener('submit', handleBannerSubmit);
+            }
+
+            async function handleBannerSubmit(e) {
+                e.preventDefault();
+
+                const formData = new FormData();
+                formData.append('image', document.getElementById('bannerImage').files[0]);
+                formData.append('title', document.getElementById('bannerTitle').value);
+                formData.append('link', document.getElementById('bannerLink').value);
+                formData.append('active', document.getElementById('bannerActive').checked);
+
+                try {
+                    const res = await fetch(`${apiBase}/banner`, {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (res.ok) {
+                        alert('Banner added successfully!');
+                        showBannerManagement();
+                    } else {
+                        alert('Failed to add banner');
+                    }
+                } catch (err) {
+                    alert('Error adding banner');
+                    console.error(err);
+                }
+            }
+
+            async function editBanner(id) {
+                try {
+                    const res = await fetch(`${apiBase}/banners`);
+                    const banners = await res.json();
+                    const banner = banners.find(b => b._id === id);
+
+                    if (!banner) {
+                        alert('Banner not found');
+                        return;
+                    }
+
+                    const mainContent = document.getElementById('mainContent');
+                    mainContent.innerHTML = `
+                        <header class="header" id="dashboardHeader">
+                            <h1>Edit Banner</h1>
+                            <div class="user-info">
+                                Welcome, <span id="adminName">Admin</span>
+                                <button class="logout-btn" onclick="handleLogout()">Logout</button>
+                            </div>
+                        </header>
+
+                        <div style="background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); max-width: 600px; margin: 0 auto;">
+                            <form id="editBannerForm" enctype="multipart/form-data">
+                                <div style="margin-bottom: 20px;">
+                                    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Current Image:</label>
+                                    <img src="/IMAGE/${banner.image}" style="max-width: 200px; border-radius: 8px;">
+                                </div>
+                                <div style="margin-bottom: 20px;">
+                                    <label style="display: block; margin-bottom: 8px; font-weight: 600;">New Image (Optional):</label>
+                                    <input type="file" id="editBannerImage" name="image" accept="image/*" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
+                                </div>
+                                <div style="margin-bottom: 20px;">
+                                    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Title:</label>
+                                    <input type="text" id="editBannerTitle" name="title" value="${banner.title || ''}" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
+                                </div>
+                                <div style="margin-bottom: 20px;">
+                                    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Link:</label>
+                                    <input type="url" id="editBannerLink" name="link" value="${banner.link || ''}" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
+                                </div>
+                                <div style="margin-bottom: 20px;">
+                                    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Active:</label>
+                                    <input type="checkbox" id="editBannerActive" name="active" ${banner.active ? 'checked' : ''}>
+                                </div>
+                                <div style="display: flex; gap: 10px;">
+                                    <button type="submit" class="btn edit">Update Banner</button>
+                                    <button type="button" class="btn delete" onclick="showBannerManagement()">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    `;
+
+                    document.getElementById('editBannerForm').addEventListener('submit', (e) => handleEditBannerSubmit(e, id));
+                } catch (err) {
+                    alert('Error loading banner for editing');
+                    console.error(err);
+                }
+            }
+
+            async function handleEditBannerSubmit(e, id) {
+                e.preventDefault();
+
+                const formData = new FormData();
+                const imageFile = document.getElementById('editBannerImage').files[0];
+                if (imageFile) {
+                    formData.append('image', imageFile);
+                }
+                formData.append('title', document.getElementById('editBannerTitle').value);
+                formData.append('link', document.getElementById('editBannerLink').value);
+                formData.append('active', document.getElementById('editBannerActive').checked);
+
+                try {
+                    const res = await fetch(`${apiBase}/banner/${id}`, {
+                        method: 'PUT',
+                        body: formData
+                    });
+
+                    if (res.ok) {
+                        alert('Banner updated successfully!');
+                        showBannerManagement();
+                    } else {
+                        alert('Failed to update banner');
+                    }
+                } catch (err) {
+                    alert('Error updating banner');
+                    console.error(err);
+                }
+            }
+
+            async function deleteBanner(id) {
+                if (!confirm("Are you sure you want to delete this banner?")) return;
+                try {
+                    const res = await fetch(`${apiBase}/banner/${id}`, { method: "DELETE" });
+                    if (res.ok) {
+                        alert("Banner deleted!");
+                        loadBanners();
+                    } else {
+                        alert("Failed to delete banner");
+                    }
+                } catch (err) {
+                    alert("Error deleting banner");
+                    console.error(err);
+                }
+            }
+
+            // Advertisement Management Functions
+            function showAdvertisementManagement() {
+                document.getElementById('dashboardHeader').innerHTML = `
+                    <h1>Advertisement Management</h1>
+                    <div class="user-info">
+                        Welcome, <span id="adminName">Admin</span>
+                        <button class="logout-btn" onclick="handleLogout()">Logout</button>
+                    </div>
+                `;
+
+                const mainContent = document.getElementById('mainContent');
+                mainContent.innerHTML = `
+                    <header class="header" id="dashboardHeader">
+                        <h1>Advertisement Management</h1>
+                        <div class="user-info">
+                            Welcome, <span id="adminName">Admin</span>
+                            <button class="logout-btn" onclick="handleLogout()">Logout</button>
+                        </div>
+                    </header>
+
+                    <div style="margin-bottom: 30px;">
+                        <button class="btn edit" onclick="showAddAdvertisementForm()" style="margin-bottom: 20px;">Add New Advertisement</button>
+                    </div>
+
+                    <table class="posts-table" id="advertisementsTable" aria-label="Advertisements List Table">
+                        <thead>
+                            <tr>
+                                <th>S.R</th>
+                                <th>Media</th>
+                                <th>Title</th>
+                                <th>Link</th>
+                                <th>Position</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="7">Loading advertisements...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                `;
+
+                loadAdvertisements();
+            }
+
+            async function loadAdvertisements() {
+                try {
+                    const res = await fetch(`${apiBase}/advertisements/all`);
+                    const advertisements = await res.json();
+
+                    const tbody = document.querySelector("#advertisementsTable tbody");
+                    tbody.innerHTML = "";
+
+                    if (advertisements.length === 0) {
+                        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:30px; color:#999;">No advertisements found.</td></tr>`;
+                        return;
+                    }
+
+                    advertisements.forEach((ad, index) => {
+                        const mediaElement = ad.mediaType === 'video' ?
+                            `<video width="100" height="55" controls><source src="/IMAGE/${ad.media}" type="video/mp4"></video>` :
+                            `<img src="/IMAGE/${ad.media}" width="100" />`;
+
+                        const tr = document.createElement("tr");
+                        tr.innerHTML = `
+                            <td>${index + 1}</td>
+                            <td>${mediaElement}</td>
+                            <td>${ad.title || 'No title'}</td>
+                            <td>${ad.link || 'No link'}</td>
+                            <td>${ad.position || 'right-sidebar'}</td>
+                            <td>${ad.active ? 'Active' : 'Inactive'}</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn edit" onclick="editAdvertisement('${ad._id}')">Edit</button>
+                                    <button class="btn delete" onclick="deleteAdvertisement('${ad._id}')">Delete</button>
+                                </div>
+                            </td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                } catch (err) {
+                    console.error("Failed to load advertisements", err);
+                    const tbody = document.querySelector("#advertisementsTable tbody");
+                    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:30px; color:#c8102e;">Error loading advertisements. Please try again.</td></tr>`;
+                }
+            }
+
+            function showAddAdvertisementForm() {
+                const mainContent = document.getElementById('mainContent');
+                mainContent.innerHTML = `
+                    <header class="header" id="dashboardHeader">
+                        <h1>Add New Advertisement</h1>
+                        <div class="user-info">
+                            Welcome, <span id="adminName">Admin</span>
+                            <button class="logout-btn" onclick="handleLogout()">Logout</button>
+                        </div>
+                    </header>
+
+                    <div style="background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); max-width: 600px; margin: 0 auto;">
+                        <form id="advertisementForm" enctype="multipart/form-data">
+                            <div style="margin-bottom: 20px;">
+                                <label style="display: block; margin-bottom: 8px; font-weight: 600;">Media File (Image/Video):</label>
+                                <input type="file" id="advertisementMedia" name="media" accept="image/*,video/*" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
+                            </div>
+                            <div style="margin-bottom: 20px;">
+                                <label style="display: block; margin-bottom: 8px; font-weight: 600;">Media Type:</label>
+                                <select id="advertisementMediaType" name="mediaType" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
+                                    <option value="image">Image</option>
+                                    <option value="video">Video</option>
+                                </select>
+                            </div>
+                            <div style="margin-bottom: 20px;">
+                                <label style="display: block; margin-bottom: 8px; font-weight: 600;">Title (Optional):</label>
+                                <input type="text" id="advertisementTitle" name="title" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
+                            </div>
+                            <div style="margin-bottom: 20px;">
+                                <label style="display: block; margin-bottom: 8px; font-weight: 600;">Link (Optional):</label>
+                                <input type="url" id="advertisementLink" name="link" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
+                            </div>
+                            <div style="margin-bottom: 20px;">
+                                <label style="display: block; margin-bottom: 8px; font-weight: 600;">Position:</label>
+                                <select id="advertisementPosition" name="position" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
+                                    <option value="right-sidebar">Right Sidebar</option>
+                                    <option value="left-sidebar">Left Sidebar</option>
+                                    <option value="top-banner">Top Banner</option>
+                                    <option value="bottom-banner">Bottom Banner</option>
+                                </select>
+                            </div>
+                            <div style="margin-bottom: 20px;">
+                                <label style="display: block; margin-bottom: 8px; font-weight: 600;">Active:</label>
+                                <input type="checkbox" id="advertisementActive" name="active" checked>
+                            </div>
+                            <div style="display: flex; gap: 10px;">
+                                <button type="submit" class="btn edit">Save Advertisement</button>
+                                <button type="button" class="btn delete" onclick="showAdvertisementManagement()">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                `;
+
+                document.getElementById('advertisementForm').addEventListener('submit', handleAdvertisementSubmit);
+            }
+
+            async function handleAdvertisementSubmit(e) {
+                e.preventDefault();
+
+                const formData = new FormData();
+                formData.append('media', document.getElementById('advertisementMedia').files[0]);
+                formData.append('mediaType', document.getElementById('advertisementMediaType').value);
+                formData.append('title', document.getElementById('advertisementTitle').value);
+                formData.append('link', document.getElementById('advertisementLink').value);
+                formData.append('position', document.getElementById('advertisementPosition').value);
+                formData.append('active', document.getElementById('advertisementActive').checked);
+
+                try {
+                    const res = await fetch(`${apiBase}/advertisement`, {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (res.ok) {
+                        alert('Advertisement added successfully!');
+                        showAdvertisementManagement();
+                    } else {
+                        alert('Failed to add advertisement');
+                    }
+                } catch (err) {
+                    alert('Error adding advertisement');
+                    console.error(err);
+                }
+            }
+
+            async function editAdvertisement(id) {
+                try {
+                    const res = await fetch(`${apiBase}/advertisements/all`);
+                    const advertisements = await res.json();
+                    const advertisement = advertisements.find(ad => ad._id === id);
+
+                    if (!advertisement) {
+                        alert('Advertisement not found');
+                        return;
+                    }
+
+                    const mainContent = document.getElementById('mainContent');
+                    mainContent.innerHTML = `
+                        <header class="header" id="dashboardHeader">
+                            <h1>Edit Advertisement</h1>
+                            <div class="user-info">
+                                Welcome, <span id="adminName">Admin</span>
+                                <button class="logout-btn" onclick="handleLogout()">Logout</button>
+                            </div>
+                        </header>
+
+                        <div style="background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); max-width: 600px; margin: 0 auto;">
+                            <form id="editAdvertisementForm" enctype="multipart/form-data">
+                                <div style="margin-bottom: 20px;">
+                                    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Current Media:</label>
+                                    ${advertisement.mediaType === 'video' ?
+                            `<video style="max-width: 200px;" controls><source src="/IMAGE/${advertisement.media}" type="video/mp4"></video>` :
+                            `<img src="/IMAGE/${advertisement.media}" style="max-width: 200px; border-radius: 8px;">`}
+                                </div>
+                                <div style="margin-bottom: 20px;">
+                                    <label style="display: block; margin-bottom: 8px; font-weight: 600;">New Media (Optional):</label>
+                                    <input type="file" id="editAdvertisementMedia" name="media" accept="image/*,video/*" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
+                                </div>
+                                <div style="margin-bottom: 20px;">
+                                    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Media Type:</label>
+                                    <select id="editAdvertisementMediaType" name="mediaType" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
+                                        <option value="image" ${advertisement.mediaType === 'image' ? 'selected' : ''}>Image</option>
+                                        <option value="video" ${advertisement.mediaType === 'video' ? 'selected' : ''}>Video</option>
+                                    </select>
+                                </div>
+                                <div style="margin-bottom: 20px;">
+                                    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Title:</label>
+                                    <input type="text" id="editAdvertisementTitle" name="title" value="${advertisement.title || ''}" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
+                                </div>
+                                <div style="margin-bottom: 20px;">
+                                    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Link:</label>
+                                    <input type="url" id="editAdvertisementLink" name="link" value="${advertisement.link || ''}" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
+                                </div>
+                                <div style="margin-bottom: 20px;">
+                                    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Position:</label>
+                                    <select id="editAdvertisementPosition" name="position" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
+                                        <option value="right-sidebar" ${advertisement.position === 'right-sidebar' ? 'selected' : ''}>Right Sidebar</option>
+                                        <option value="left-sidebar" ${advertisement.position === 'left-sidebar' ? 'selected' : ''}>Left Sidebar</option>
+                                        <option value="top-banner" ${advertisement.position === 'top-banner' ? 'selected' : ''}>Top Banner</option>
+                                        <option value="bottom-banner" ${advertisement.position === 'bottom-banner' ? 'selected' : ''}>Bottom Banner</option>
+                                    </select>
+                                </div>
+                                <div style="margin-bottom: 20px;">
+                                    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Active:</label>
+                                    <input type="checkbox" id="editAdvertisementActive" name="active" ${advertisement.active ? 'checked' : ''}>
+                                </div>
+                                <div style="display: flex; gap: 10px;">
+                                    <button type="submit" class="btn edit">Update Advertisement</button>
+                                    <button type="button" class="btn delete" onclick="showAdvertisementManagement()">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    `;
+
+                    document.getElementById('editAdvertisementForm').addEventListener('submit', (e) => handleEditAdvertisementSubmit(e, id));
+                } catch (err) {
+                    alert('Error loading advertisement for editing');
+                    console.error(err);
+                }
+            }
+
+            async function handleEditAdvertisementSubmit(e, id) {
+                e.preventDefault();
+
+                const formData = new FormData();
+                const mediaFile = document.getElementById('editAdvertisementMedia').files[0];
+                if (mediaFile) {
+                    formData.append('media', mediaFile);
+                    formData.append('mediaType', document.getElementById('editAdvertisementMediaType').value);
+                }
+                formData.append('title', document.getElementById('editAdvertisementTitle').value);
+                formData.append('link', document.getElementById('editAdvertisementLink').value);
+                formData.append('position', document.getElementById('editAdvertisementPosition').value);
+                formData.append('active', document.getElementById('editAdvertisementActive').checked);
+
+                try {
+                    const res = await fetch(`${apiBase}/advertisement/${id}`, {
+                        method: 'PUT',
+                        body: formData
+                    });
+
+                    if (res.ok) {
+                        alert('Advertisement updated successfully!');
+                        showAdvertisementManagement();
+                    } else {
+                        alert('Failed to update advertisement');
+                    }
+                } catch (err) {
+                    alert('Error updating advertisement');
+                    console.error(err);
+                }
+            }
+
+            async function deleteAdvertisement(id) {
+                if (!confirm("Are you sure you want to delete this advertisement?")) return;
+                try {
+                    const res = await fetch(`${apiBase}/advertisement/${id}`, { method: "DELETE" });
+                    if (res.ok) {
+                        alert("Advertisement deleted!");
+                        loadAdvertisements();
+                    } else {
+                        alert("Failed to delete advertisement");
+                    }
+                } catch (err) {
+                    alert("Error deleting advertisement");
+                    console.error(err);
+                }
+            }
+
+            document.addEventListener("DOMContentLoaded", () => {
+                checkLogin();
+                loadPostCount();
+                loadUserStats();
+                loadPosts();
+            });
+        </script>
+    </body>
+
+</html>
