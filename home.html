@@ -152,6 +152,11 @@
                 updateTime();
 
                 loadRightSidebarAd();
+
+                // Check user login status
+                if (typeof checkUserLogin === 'function') {
+                    checkUserLogin();
+                }
             });
 
             async function loadRightSidebarAd() {

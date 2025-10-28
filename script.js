@@ -404,7 +404,7 @@ document.addEventListener("DOMContentLoaded", fetchAllData);
 /////////
 
 
-// ================== BANNER SLIDER FUNCTIONALITY ========================///
+// ==== BANNER SLIDER FUNCTIONALITY ===///
 let currentBannerIndex = 0;
 let bannerSlides = [];
 let bannerInterval;
@@ -493,7 +493,7 @@ function stopBannerAutoSlide() {
 document.addEventListener('DOMContentLoaded', loadBanners);
 
 
-// ================== POST DETAILS CLICK ========================///
+// ==== POST DETAILS CLICK ===///
 async function loadPostsBySection(sectionName, containerId) {
   try {
     const res = await fetch(`http://localhost:3000/api/posts/section/${sectionName}`);
@@ -1196,6 +1196,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-/* =============================================================
+/* =====
    End of unified script.js
-   ============================================================= */
+   ===== */

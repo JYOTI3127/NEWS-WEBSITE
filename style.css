@@ -304,6 +304,68 @@ nav ul li:hover>.submenu {
     pointer-events: auto
 }
 
+/* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 400px;
+    border-radius: 8px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+}
+
+.modal-content h2 {
+    margin-top: 0;
+}
+
+.modal-content input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.modal-content button {
+    width: 100%;
+    padding: 10px;
+    background-color: #353a9b;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.modal-content button:hover {
+    background-color: #4f51c0;
+}
+
 /* ---------- FOOTER ---------- */
 .site-footer {
     background: #121217;
@@ -988,7 +1050,7 @@ a {
     color: #c8102e;
 }
 
-/*============= POLITICS CSS========== */
+/*====== POLITICS CSS=== */
 #politics-section {
     max-width: 1238px;
     margin: 40px 3%;
@@ -1083,7 +1145,7 @@ a {
     }
 }
 
-/* ============= SPORTS PAGE============= */
+/* ====== SPORTS PAGE====== */
 .hero-section {
     position: relative;
     width: 100%;
@@ -1271,7 +1333,7 @@ a {
     color: #c8102e;
 }
 
-/* =============== EVENT PAGE================= */
+/* = EVENT PAGE=== */
 .event-hero {
     height: 60vh;
     background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
@@ -1506,7 +1568,7 @@ a {
     transform: scale(1.03);
 }
 
-/* ============ POLITICS PAGE CSS ========= */
+/* ===== POLITICS PAGE CSS == */
 .politics-hero {
     position: relative;
     background: url('https://images.unsplash.com/photo-1520452112805-c6692c840af0?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8cG9saXRpY3N8ZW58MHx8MHx8fDA%3D') no-repeat center center;
@@ -2207,7 +2269,7 @@ a {
     color: #000;
 }
 
-/* ======================= TELEVISION PAGE CSS =================== */
+/* == TELEVISION PAGE CSS ===== */
 .tv-hero-bg {
     width: 100%;
     height: 350px;
@@ -2342,7 +2404,7 @@ a {
 
 }
 
-/* ============ DIGITAL-PAGE-CSS  ============ */
+/* ===== DIGITAL-PAGE-CSS  ===== */
 
 .digital-video-section {
     width: 100%;
@@ -2357,7 +2419,7 @@ a {
     object-fit: cover;
 }
 
-/*===========================  ADVERSING SEACTION CSS  ==================================*/
+/*======  ADVERSING SEACTION CSS  ======*/
 
 #advertising-section,
 #marketing-section,
@@ -2376,7 +2438,7 @@ a {
 }
 
 
-/*===========================  EVENTS PAGE/SEACTION CSS  ==================================*/
+/*======  EVENTS PAGE/SEACTION CSS  ======*/
 
 #Corporate-section,
 #Awards-section,
@@ -2394,7 +2456,7 @@ a {
     gap: 20px;
 }
 
-/* ============ ARTICLE-DETAILS-CSS  ============ */
+/* ===== ARTICLE-DETAILS-CSS  ===== */
 
 .article-section {
     display: flex;
@@ -2863,7 +2925,7 @@ a {
     }
 }
 
-/* ==================== NEWS PAGE CSS ========================== */
+/* ====== NEWS PAGE CSS ===== */
 .news-hero {
     position: relative;
     width: 100%;
@@ -2927,7 +2989,7 @@ a {
     background-color: #2d2f7f;
 }
 
-/*  =========== ABOUT PAGE CSSS =========== */
+/*  ==== ABOUT PAGE CSSS ==== */
 .hero {
     background: url('IMAGE/news-hero.jpg') center/cover no-repeat;
     height: 35vh;
@@ -3147,7 +3209,7 @@ a {
 
 
 
-/*===================== RESPONSIVE CODE ================ */
+/* RESPONSIVE CODE == */
 
 @media(max-width:1024px) {
 
@@ -3495,7 +3557,7 @@ a {
     }
 
 
-    /* =========================   EVENT PAGE RESPONSIVE =========================== */
+    /* ====   EVENT PAGE RESPONSIVE ====== */
     .news-hero,
     .tv-hero-bg,
     .digital-video-section {
@@ -3536,7 +3598,7 @@ a {
         font-size: 20px !important;
     }
 
-    /* =========================   MEDIA PAGE RESPONSIVE =========================== */
+    /* ====   MEDIA PAGE RESPONSIVE ====== */
     .tv-news-grid,
     .tv-news-cards,
     .news-section,
@@ -3599,7 +3661,7 @@ a {
         margin-top: 10%;
     }
 
-    /* =========================   CORPORATE PAGE RESPONSIVE =========================== */
+    /* ====   CORPORATE PAGE RESPONSIVE ====== */
     .tv-container {
         padding: 10px;
         padding-top: 0px;
@@ -3631,7 +3693,7 @@ a {
         gap: 15px;
     }
 
-    /* =========================   CONTACT  PAGE RESPONSIVE =========================== */
+    /* ====   CONTACT  PAGE RESPONSIVE ====== */
     .map-section {
         margin-top: 5%;
         width: 100%;
