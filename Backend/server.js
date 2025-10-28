@@ -6,6 +6,7 @@ const path = require("path");
 const mongoose = require("mongoose");
 const nodemailer = require("nodemailer");
 
+
 // Import routes
 const apiRoutes = require("./routes/api");
 const adminRoutes = require("./routes/admin");
@@ -15,12 +16,15 @@ const bannerRoutes = require("./routes/bannerRoutes");
 const userAuthRoutes = require("./routes/userAuth");
 const advertisementRoutes = require("./routes/advertisementRoutes");
 const newsRoutes = require("./routes/newsRoutes");
+const rootPath = path.join(__dirname, "..");
+
 
 // Initialize Express
 const app = express();
 
 app.use(cors());
 app.use(express.json({ limit: "10mb" }));
+app.use(express.static(rootPath));
 
 // =========================
 // STATIC FILE SETUP
