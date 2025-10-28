@@ -108,10 +108,19 @@ mongoose
 app.use("/IMAGE", express.static(path.join(__dirname, "IMAGE")));       // backend/IMAGE
 // app.use("/IMAGE", express.static(path.join(__dirname, "..", "IMAGE"))); // root/IMAGE
 // app.use("/MEDIA", express.static(path.join(__dirname, "..", "MEDIA"))); // if MEDIA exists
-// app.use(express.static(path.join(__dirname, "..")));                    
+// app.use(express.static(path.join(__dirname, "..")));    
+
+app.get("/header.html", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "header.html"));
+});
+
+app.get("/footer.html", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "footer.html"));
+});
 
 
 const userAuthRoutes = require("./routes/userAuth");
+
 
 // 🔗 Routes
 const advertisementRoutes = require("./routes/advertisementRoutes");
