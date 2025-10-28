@@ -5,7 +5,7 @@ const cors = require("cors");
 const path = require("path");
 const mongoose = require("mongoose");
 const nodemailer = require("nodemailer");
-
+const fs = require("fs");
 
 // Import routes
 const apiRoutes = require("./routes/api");
@@ -105,26 +105,14 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "home.html"));
 });
 
-app.get("/header.html", (req, res, next) => {
-  const headerPath = path.resolve(__dirname, "../header.html");
-  console.log("Serving header:", headerPath);
-  res.sendFile(headerPath, (err) => {
-    if (err) {
-      console.error("❌ Header file not found:", err.message);
-      next(); // Pass to 404
-    }
-  });
-});
-
-app.get("/footer.html", (req, res, next) => {
-  const footerPath = path.resolve(__dirname, "../footer.html");
-  console.log("Serving footer:", footerPath);
-  res.sendFile(footerPath, (err) => {
-    if (err) {
-      console.error("❌ Footer file not found:", err.message);
-      next();
-    }
-  });
+app.get("/:fileName(header.html|footer.html)", (req, res) => {
+  const filePath = path.join(__dirname, "..", req.params.fileName);
+  if (fs.existsSync(filePath)) {
+    res.sendFile(filePath);
+  } else {
+    console.error(`❌ File not found: ${filePath}`);
+    res.status(404).send("Not Found");
+  }
 });
 
 app.get("/admin", (req, res) => {
