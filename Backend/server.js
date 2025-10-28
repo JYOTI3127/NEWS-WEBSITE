@@ -104,10 +104,12 @@ mongoose
   .catch((err) => console.error("❌ MongoDB connection error:", err));
 
 // 📂 Serve static files
-app.use(express.static(path.join(__dirname, "..")));
-app.use("/IMAGE", express.static(path.join(__dirname, "IMAGE")));
-app.use("/IMAGE", express.static(path.join(__dirname, "..", "IMAGE")));
-app.use("/MEDIA", express.static(path.join(__dirname, "MEDIA")));
+// ✅ Serve static files properly from both backend & root folders
+app.use("/IMAGE", express.static(path.join(__dirname, "IMAGE")));       // backend/IMAGE
+app.use("/IMAGE", express.static(path.join(__dirname, "..", "IMAGE"))); // root/IMAGE
+app.use("/MEDIA", express.static(path.join(__dirname, "..", "MEDIA"))); // if MEDIA exists
+app.use(express.static(path.join(__dirname, "..")));                    // serve all frontend HTML, CSS, JS
+
 
 const userAuthRoutes = require("./routes/userAuth");
 
