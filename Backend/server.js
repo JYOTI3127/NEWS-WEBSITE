@@ -16,24 +16,22 @@ const bannerRoutes = require("./routes/bannerRoutes");
 const userAuthRoutes = require("./routes/userAuth");
 const advertisementRoutes = require("./routes/advertisementRoutes");
 const newsRoutes = require("./routes/newsRoutes");
-const rootPath = path.join(__dirname, "..");
 
+// ✅ Root path (parent folder = marketing)
+const rootPath = path.resolve(__dirname, "..");
 
 // Initialize Express
 const app = express();
 
 app.use(cors());
 app.use(express.json({ limit: "10mb" }));
-app.use(express.static(rootPath));
 
 // =========================
 // STATIC FILE SETUP
 // =========================
 app.use("/IMAGE", express.static(path.join(__dirname, "IMAGE")));
 app.use("/MEDIA", express.static(path.join(__dirname, "MEDIA")));
-
-// ✅ Serve frontend static files from parent folder (marketing)
-app.use(express.static(path.join(__dirname, "..")));
+app.use(express.static(rootPath)); // serve all frontend files
 
 // =========================
 // Nodemailer Config
@@ -101,12 +99,15 @@ app.use("/api/advertisements", advertisementRoutes);
 // =========================
 // FRONTEND ROUTES
 // =========================
+
+// 🏠 Home
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "home.html"));
+  res.sendFile(path.join(rootPath, "home.html"));
 });
 
+// 🧩 Header/Footer dynamic serve
 app.get("/:fileName(header.html|footer.html)", (req, res) => {
-  const filePath = path.join(__dirname, "..", req.params.fileName);
+  const filePath = path.join(rootPath, req.params.fileName);
   if (fs.existsSync(filePath)) {
     res.sendFile(filePath);
   } else {
@@ -115,12 +116,13 @@ app.get("/:fileName(header.html|footer.html)", (req, res) => {
   }
 });
 
+// ⚙️ Other HTML pages
 app.get("/admin", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "admin.html"));
+  res.sendFile(path.join(rootPath, "admin.html"));
 });
 
 app.get("/post-details.html", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "post-details.html"));
+  res.sendFile(path.join(rootPath, "post-details.html"));
 });
 
 // =========================
