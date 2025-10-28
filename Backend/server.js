@@ -106,9 +106,9 @@ mongoose
 // 📂 Serve static files
 // ✅ Serve static files properly from both backend & root folders
 app.use("/IMAGE", express.static(path.join(__dirname, "IMAGE")));       // backend/IMAGE
-app.use("/IMAGE", express.static(path.join(__dirname, "..", "IMAGE"))); // root/IMAGE
-app.use("/MEDIA", express.static(path.join(__dirname, "..", "MEDIA"))); // if MEDIA exists
-app.use(express.static(path.join(__dirname, "..")));                    // serve all frontend HTML, CSS, JS
+// app.use("/IMAGE", express.static(path.join(__dirname, "..", "IMAGE"))); // root/IMAGE
+// app.use("/MEDIA", express.static(path.join(__dirname, "..", "MEDIA"))); // if MEDIA exists
+// app.use(express.static(path.join(__dirname, "..")));                    
 
 
 const userAuthRoutes = require("./routes/userAuth");
