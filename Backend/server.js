@@ -105,12 +105,26 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "home.html"));
 });
 
-app.get("/header.html", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "header.html"));
+app.get("/header.html", (req, res, next) => {
+  const headerPath = path.resolve(__dirname, "../header.html");
+  console.log("Serving header:", headerPath);
+  res.sendFile(headerPath, (err) => {
+    if (err) {
+      console.error("❌ Header file not found:", err.message);
+      next(); // Pass to 404
+    }
+  });
 });
 
-app.get("/footer.html", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "footer.html"));
+app.get("/footer.html", (req, res, next) => {
+  const footerPath = path.resolve(__dirname, "../footer.html");
+  console.log("Serving footer:", footerPath);
+  res.sendFile(footerPath, (err) => {
+    if (err) {
+      console.error("❌ Footer file not found:", err.message);
+      next();
+    }
+  });
 });
 
 app.get("/admin", (req, res) => {
