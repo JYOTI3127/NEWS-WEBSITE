@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   async function loadCorporate() {
     const container = document.getElementById('Corporate-container');
     try {
-      const res = await fetch('http://localhost:3000/api/posts/section/Corporate');
+      const res = await fetch('https://news-websites-jch5.onrender.com/api/posts/section/Corporate');
       const posts = await res.json();
 
       if (!posts.length) {
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
   async function loadAwards() {
     const container = document.getElementById('Awards-container');
     try {
-      const res = await fetch('http://localhost:3000/api/posts/section/Awards');
+      const res = await fetch('https://news-websites-jch5.onrender.com/api/posts/section/Awards');
       const posts = await res.json();
 
       if (!posts.length) {
@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
   async function loadVenue() {
     const container = document.getElementById('Venue-container');
     try {
-      const res = await fetch('http://localhost:3000/api/posts/section/Venue');
+      const res = await fetch('https://news-websites-jch5.onrender.com/api/posts/section/Venue');
       const posts = await res.json();
 
       if (!posts.length) {
@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // ----------------- Advertising Section -----------------
   async function loadAdvertisingPosts() {
     try {
-      const res = await fetch("http://localhost:3000/api/posts/section/advertising");
+      const res = await fetch("https://news-websites-jch5.onrender.com/api/posts/section/advertising");
       const posts = await res.json();
       const container = document.getElementById("advertising-container");
 
@@ -180,7 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // ----------------- Marketing Section -----------------
   async function loadMarketingPosts() {
     try {
-      const res = await fetch("http://localhost:3000/api/posts/section/marketing");
+      const res = await fetch("https://news-websites-jch5.onrender.com/api/posts/section/marketing");
       const posts = await res.json();
       const container = document.getElementById("marketing-container");
 
@@ -232,7 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // ----------------- Brands Section -----------------
   async function loadBrandsPosts() {
     try {
-      const response = await fetch("http://localhost:3000/api/posts/section/brands");
+      const response = await fetch("https://news-websites-jch5.onrender.com/api/posts/section/brands");
       const posts = await response.json();
       const container = document.getElementById("brands-container");
 
@@ -272,7 +272,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 //////home page js/////
-const apiBase = "http://localhost:3000/api";
+const apiBase = "https://news-websites-jch5.onrender.com/api";
 
 const isValidImage = (image) => image && typeof image === "string" && image.trim() !== "";
 
@@ -411,7 +411,7 @@ let bannerInterval;
 
 async function loadBanners() {
   try {
-    const response = await fetch('http://localhost:3000/api/banners');
+    const response = await fetch('https://news-websites-jch5.onrender.com/api/banners');
     const banners = await response.json();
 
     if (banners.length === 0) {
@@ -496,7 +496,7 @@ document.addEventListener('DOMContentLoaded', loadBanners);
 // ==== POST DETAILS CLICK ===///
 async function loadPostsBySection(sectionName, containerId) {
   try {
-    const res = await fetch(`http://localhost:3000/api/posts/section/${sectionName}`);
+    const res = await fetch(`https://news-websites-jch5.onrender.com/api/posts/section/${sectionName}`);
     if (!res.ok) throw new Error("Failed to fetch posts");
     const posts = await res.json();
 
@@ -686,7 +686,7 @@ document.addEventListener('DOMContentLoaded', () => {
 ////////////////////////////////// TELEVISION JS //////////////////////////////////////
 
 const loadTVPosts = () => {
-  fetch("http://localhost:3000/api/posts/section/tv")
+  fetch("https://news-websites-jch5.onrender.com/api/posts/section/tv")
     .then(res => res.json())
     .then(posts => {
       const tvSection = document.getElementById("televisionNewsSection");
@@ -764,7 +764,7 @@ window.addEventListener('load', loadTVPosts);
 // Digital Section
 async function loadDigitalPosts() {
   try {
-    const res = await fetch("http://localhost:3000/api/posts/section/digital");
+    const res = await fetch("https://news-websites-jch5.onrender.com/api/posts/section/digital");
     const posts = await res.json();
 
     const left = document.getElementById("leftColumn");
@@ -801,7 +801,7 @@ window.addEventListener('load', loadDigitalPosts);
 // Social Media Section
 async function loadSocialMediaPosts() {
   try {
-    const res = await fetch("http://localhost:3000/api/posts/section/social");
+    const res = await fetch("https://news-websites-jch5.onrender.com/api/posts/section/social");
     const posts = await res.json();
 
     const leftMain = document.getElementById("leftMain");
@@ -890,7 +890,7 @@ window.addEventListener("DOMContentLoaded", fetchAllPosts);
 ///////////////////// SPORTS JS/////////////
 async function loadSportsPosts() {
   try {
-    const res = await fetch("http://localhost:3000/api/posts/section/sports");
+    const res = await fetch("https://news-websites-jch5.onrender.com/api/posts/section/sports");
     const posts = await res.json();
     if (!posts.length) {
       document.getElementById("sports-container").innerHTML =
@@ -944,7 +944,7 @@ loadSportsPosts();
 ////////////////////////  EVNET JS//////////
 async function loadEventPosts() {
   try {
-    const res = await fetch("http://localhost:3000/api/posts/section/event");
+    const res = await fetch("https://news-websites-jch5.onrender.com/api/posts/section/event");
     const posts = await res.json();
     const container = document.getElementById("event-container");
 
@@ -1006,7 +1006,7 @@ loadEventPosts();
 // ////////////////////////////    POLITICS JS///////////////////
 async function loadPoliticsPosts() {
   try {
-    const response = await fetch("http://localhost:3000/api/posts/section/politics");
+    const response = await fetch("https://news-websites-jch5.onrender.com/api/posts/section/politics");
     const posts = await response.json();
     const container = document.getElementById("politics-container");
 

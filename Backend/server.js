@@ -113,9 +113,12 @@ const userAuthRoutes = require("./routes/userAuth");
 
 // 🔗 Routes
 const advertisementRoutes = require("./routes/advertisementRoutes");
+const newsRoutes = require("./routes/newsRoutes");
+
 
 
 app.use("/api", apiRoutes);
+app.use("/api/news", newsRoutes);
 app.use("/admin", adminRoutes);
 app.use("/auth", adminAuthRoutes);
 app.use("/auth/user", userAuthRoutes);
