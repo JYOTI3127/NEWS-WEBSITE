@@ -20,7 +20,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const featuredHTML = `
         <a href="post-details.html?id=${featured._id}" class="featured-card">
-          <img src="http://localhost:3000/IMAGE/${featured.image}" alt="${featured.title}" />
+          <img src="https://news-websites-jch5.onrender.com/IMAGE
+/${featured.image}" alt="${featured.title}" />
           <div class="featured-info">
             <h3>${featured.title}</h3>
             <p>${featured.content || ''}</p>
@@ -31,7 +32,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const sideHTML = sidePosts.map(post => `
         <a href="post-details.html?id=${post._id}" class="side-card">
           <div style="position:relative;">
-            <img src="http://localhost:3000/IMAGE/${post.image}" alt="${post.title}" />
+            <img src="https://news-websites-jch5.onrender.com/IMAGE
+/${post.image}" alt="${post.title}" />
           </div>
           <div class="side-info">
             <div class="title">${post.title}</div>
@@ -66,7 +68,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const bigCardsHTML = bigCards.map(
         (post) => `
           <a href="post-details.html?id=${post._id}" class="big-card">
-            <img src="http://localhost:3000/IMAGE/${post.image}" alt="${post.title}" />
+            <img src="https://news-websites-jch5.onrender.com/IMAGE
+/${post.image}" alt="${post.title}" />
             <div class="info">
               <div><span class="section"></span></div>
               <div class="title">${post.title}</div>
@@ -79,7 +82,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const smallCardsHTML = smallCards.map(
         (post) => `
           <a href="post-details.html?id=${post._id}" class="small-card">
-            <img src="http://localhost:3000/IMAGE/${post.image}" alt="${post.title}" />
+            <img src="https://news-websites-jch5.onrender.com/IMAGE
+/${post.image}" alt="${post.title}" />
             <div class="info">
               <span class="section"></span>
               <div class="title">${post.title}</div>
@@ -115,7 +119,8 @@ document.addEventListener('DOMContentLoaded', () => {
       container.innerHTML = posts.map((post, i) => `
         <a href="post-details.html?id=${post._id}" class="politics-card" style="animation-delay: ${i * 0.1}s">
           <div class="politics-image">
-            <img src="http://localhost:3000/IMAGE/${post.image}" alt="${post.title}">
+            <img src="https://news-websites-jch5.onrender.com/IMAGE
+/${post.image}" alt="${post.title}">
           </div>
           <div class="politics-content">
             <div><span class="section"></span></div>
@@ -148,7 +153,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const featuredHTML = `
         <a href="post-details.html?id=${featured._id}" class="featured-card">
-          <img src="http://localhost:3000/IMAGE/${featured.image}" alt="${featured.title}" />
+          <img src="https://news-websites-jch5.onrender.com/IMAGE
+/${featured.image}" alt="${featured.title}" />
           <div class="featured-info">
             <h3>${featured.title}</h3>
             <p>${featured.content || ''}</p>
@@ -159,7 +165,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const sideHTML = sidePosts.map(post => `
         <a href="post-details.html?id=${post._id}" class="side-card">
           <div style="position:relative;">
-            <img src="http://localhost:3000/IMAGE/${post.image}" alt="${post.title}" />
+            <img src="https://news-websites-jch5.onrender.com/IMAGE
+/${post.image}" alt="${post.title}" />
           </div>
           <div class="side-info">
             <div class="title">${post.title}</div>
@@ -195,7 +202,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const bigCardsHTML = bigCards.map(
         (post) => `
           <a href="post-details.html?id=${post._id}" class="big-card">
-            <img src="http://localhost:3000/IMAGE/${post.image}" alt="${post.title}" />
+            <img src="https://news-websites-jch5.onrender.com/IMAGE
+/${post.image}" alt="${post.title}" />
             <div class="info">
               <div><span class="section"></span></div>
               <div class="title">${post.title}</div>
@@ -208,7 +216,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const smallCardsHTML = smallCards.map(
         (post) => `
           <a href="post-details.html?id=${post._id}" class="small-card">
-            <img src="http://localhost:3000/IMAGE/${post.image}" alt="${post.title}" />
+            <img src="https://news-websites-jch5.onrender.com/IMAGE
+/${post.image}" alt="${post.title}" />
             <div class="info">
               <span class="section"></span>
               <div class="title">${post.title}</div>
@@ -244,7 +253,8 @@ document.addEventListener('DOMContentLoaded', () => {
       container.innerHTML = posts.map((post, i) => `
         <a href="post-details.html?id=${post._id}" class="politics-card" style="animation-delay: ${i * 0.1}s">
           <div class="politics-image">
-            <img src="http://localhost:3000/IMAGE/${post.image}" alt="${post.title}">
+            <img src="https://news-websites-jch5.onrender.com/IMAGE
+/${post.image}" alt="${post.title}">
           </div>
           <div class="politics-content">
             <div><span class="section"></span></div>
@@ -312,7 +322,8 @@ function renderLeftSidebar(posts) {
   container.innerHTML = posts.map(post => `
     <div class="sidebar-post vertical">
       <a href="post-details.html?id=${post._id}">
-        <img class="fade-img" src="http://localhost:3000/IMAGE/${isValidImage(post.image) ? post.image : 'default.jpg'}" />
+        <img class="fade-img" src="https://news-websites-jch5.onrender.com/IMAGE
+/${isValidImage(post.image) ? post.image : 'default.jpg'}" />
         <div class="info">
           <h4>${post.title}</h4>
           <p>${post.content ? post.content.substring(0, 120) : ""}...</p>
@@ -334,7 +345,8 @@ function renderCenterPosts(posts) {
   const topHTML = `
     <div class="main-post-item large">
       <a href="post-details.html?id=${topPost._id}">
-        <img class="fade-img" src="http://localhost:3000/IMAGE/${isValidImage(topPost.image) ? topPost.image : 'default.jpg'}" />
+        <img class="fade-img" src="https://news-websites-jch5.onrender.com/IMAGE
+/${isValidImage(topPost.image) ? topPost.image : 'default.jpg'}" />
         <div class="content">
           <h2>${topPost.title}</h2>
           <p>${topPost.content ? topPost.content.substring(0, 200) : ""}...</p>
@@ -347,7 +359,8 @@ function renderCenterPosts(posts) {
     ${otherPosts.map(post => `
       <div class="main-post-item small">
         <a href="post-details.html?id=${post._id}">
-          <img class="fade-img" src="http://localhost:3000/IMAGE/${isValidImage(post.image) ? post.image : 'default.jpg'}" />
+          <img class="fade-img" src="https://news-websites-jch5.onrender.com/IMAGE
+/${isValidImage(post.image) ? post.image : 'default.jpg'}" />
           <div class="content">
             <h3>${post.title}</h3>
             <p>${post.content ? post.content.substring(0, 100) : ""}...</p>
@@ -382,7 +395,8 @@ function renderRightSidebar(posts, ads) {
     postsContainer.innerHTML += `
       <div class="sidebar-post horizontal">
         <a href="post-details.html?id=${post._id}" style="display:flex; gap:10px; align-items:center;">
-          <img class="fade-img" src="http://localhost:3000/IMAGE/${isValidImage(post.image) ? post.image : 'default.jpg'}" 
+          <img class="fade-img" src="https://news-websites-jch5.onrender.com/IMAGE
+/${isValidImage(post.image) ? post.image : 'default.jpg'}" 
                style=" width: 101px;  height: 71px; object-fit:cover; border-radius:5px;" />
           <div class="info">
             <h4>${post.title}</h4>
@@ -451,7 +465,8 @@ function renderBanners() {
     anchor.className = 'banner-link';
 
     const img = document.createElement('img');
-    img.src = `http://localhost:3000/IMAGE/${banner.image}`;
+    img.src = `https://news-websites-jch5.onrender.com/IMAGE
+/${banner.image}`;
     img.alt = 'Banner';
     img.className = 'banner-image';
     img.style.objectFit = 'cover';
@@ -510,7 +525,8 @@ async function loadPostsBySection(sectionName, containerId) {
       html += `
         <div class="post-card">
           <a href="post-details.html?id=${post._id}">
-            <img src="http://localhost:3000/IMAGE/${post.image}" alt="${post.title}" />
+            <img src="https://news-websites-jch5.onrender.com/IMAGE
+/${post.image}" alt="${post.title}" />
             <h3>${post.title}</h3>
           </a>
           <p>${post.content.substring(0, 100)}...</p>
@@ -534,154 +550,6 @@ document.addEventListener('DOMContentLoaded', () => {
   loadPostsBySection('tv', 'televisionNewsSection');
   loadRightSidebarAdvertisements();
 });
-
-
-
-// ///////ADVERSTING JS/////////////////
-// async function loadAdvertisingPosts() {
-//   try {
-//     const res = await fetch("http://localhost:3000/api/posts/section/advertising");
-//     const posts = await res.json();
-//     console.log(posts);
-
-//     const container = document.getElementById("advertising-container");
-
-//     if (!posts.length) {
-//       container.innerHTML = '<p style="color:white">No posts available</p>';
-//       return;
-//     }
-
-//     const featured = posts[0];
-//     const sidePosts = posts.slice(1);
-
-//     const featuredHTML = `
-//   <a href="post-details.html?id=${featured._id}" class="featured-card">
-//       <img src="http://localhost:3000/IMAGE/${featured.image}" alt="${featured.title}" />
-//       <div class="featured-info">
-//           <h3>${featured.title}</h3>
-//           <p>${featured.content || ''}</p>
-//       </div>
-//   </a>
-// `;
-
-//     const sideHTML = sidePosts.map(post => `
-//    <a href="post-details.html?id=${post._id}" class="side-card">
-//       <div style="position:relative;">
-//         <img src="http://localhost:3000/IMAGE/${post.image}" alt="${post.title}" />
-//       </div>
-//       <div class="side-info">
-//         <div class="title">${post.title}</div>
-//         <p class="excerpt">${post.content ? post.content.substring(0, 100) + '...' : ''}</p>
-//       </div>
-//    </a>
-// `).join("");
-
-//     container.innerHTML = featuredHTML + `<div class="side-cards">${sideHTML}</div>`;
-
-//   } catch (err) {
-//     console.error("Error loading advertising posts:", err);
-//     document.getElementById("advertising-container").innerHTML =
-//       '<p style="color:red">Error loading posts</p>';
-//   }
-// }
-
-// // Marketing Section
-// async function loadMarketingPosts() {
-//   try {
-//     const res = await fetch("http://localhost:3000/api/posts/section/marketing");
-//     const posts = await res.json();
-//     const container = document.getElementById("marketing-container");
-
-//     if (!posts.length) {
-//       container.innerHTML = "<p>No marketing posts available.</p>";
-//       return;
-//     }
-
-//     // First 2 posts for big cards
-//     const bigCards = posts.slice(0, 2);
-//     // Next 3 posts for small cards
-//     const smallCards = posts.slice(2, 5);
-
-//     const bigCardsHTML = bigCards
-//       .map(
-//         (post) => `
-//       <a href="post-details.html?id=${post._id}" class="big-card">
-//         <img src="http://localhost:3000/IMAGE/${post.image}" alt="${post.title}" />
-//         <div class="info">
-//           <div><span class="section"></span></div>
-//           <div class="title">${post.title}</div>
-//           <p class="politics-excerpt">${post.content ? post.content.substring(0, 100) + '...' : ''}</p>
-//         </div>
-//       </a>
-//     `
-//       )
-//       .join("");
-
-//     const smallCardsHTML = smallCards
-//       .map(
-//         (post) => `
-//            <a href="post-details.html?id=${post._id}" class="small-card">
-//           <img src="http://localhost:3000/IMAGE/${post.image}" alt="${post.title}" />
-//           <div class="info">
-//             <span class="section"></span>
-//             <div class="title">${post.title}</div>
-//             <p class="politics-excerpt">${post.content?.substring(0, 100) || ''}...</p>
-//           </div>
-//         </a>
-//       `
-//       )
-//       .join("");
-
-//     container.innerHTML = `
-//       <div class="big-cards">${bigCardsHTML}</div>
-//       <div class="small-cards">${smallCardsHTML}</div>
-//     `;
-//   } catch (err) {
-//     console.error("Error loading marketing posts:", err);
-//     document.getElementById("marketing-container").innerHTML =
-//       "<p>Error loading marketing posts.</p>";
-//   }
-// }
-
-// // Brands Section
-// async function loadBrandsPosts() {
-//   try {
-//     const response = await fetch("http://localhost:3000/api/posts/section/brands");
-//     const posts = await response.json();
-//     const container = document.getElementById("brands-container");
-
-//     if (!posts.length) {
-//       container.innerHTML = "<p>No brand posts found.</p>";
-//       return;
-//     }
-
-//     container.innerHTML = posts
-//       .map((post, i) => `
-//           <a href="post-details.html?id=${post._id}" class="politics-card" style="animation-delay: ${i * 0.1}s">
-//           <div class="politics-image">
-//             <img src="http://localhost:3000/IMAGE/${post.image}" alt="${post.title}">
-//           </div>
-//           <div class="politics-content">
-//             <div>
-//               <span class="section"></span>
-//             </div>
-//             <h3 class="politics-title">${post.title}</h3>
-//             <p class="politics-excerpt">${post.content.substring(0, 100)}...</p>
-//           </div>
-//        </a>
-//       `)
-//       .join("");
-
-//   } catch (error) {
-//     console.error("Error loading brands posts:", error);
-//     document.getElementById("brands-container").innerHTML =
-//       "<p>Error loading brand posts.</p>";
-//   }
-// }
-
-// loadAdvertisingPosts();
-// loadMarketingPosts();
-// loadBrandsPosts();
 
 ////////////////////////////////// TELEVISION JS //////////////////////////////////////
 
@@ -870,7 +738,8 @@ const loadPosts = (category, containerId) => {
         const card = document.createElement("div");
         card.className = "card";
         card.innerHTML = `
-          <img src="http://localhost:3000/IMAGE/${post.image || "default.jpg"}" alt="${post.title}" />
+          <img src="https://news-websites-jch5.onrender.com/IMAGE
+/${post.image || "default.jpg"}" alt="${post.title}" />
           <div class="content">
             <h3>${post.title}</h3>
             <p>${post.content?.substring(0, 100) || ""}...</p>
@@ -902,7 +771,8 @@ async function loadSportsPosts() {
     const container = document.getElementById("sports-container");
     const featuredHTML = `
 <a href="post-details.html?id=${featured._id}" class="featured-card">
-  <img src="http://localhost:3000/IMAGE/${featured.image}" alt="${featured.title}" />
+  <img src="https://news-websites-jch5.onrender.com/IMAGE
+/${featured.image}" alt="${featured.title}" />
   <div class="featured-info">
     <div class="section"></div>
     <h3>${featured.title}</h3>
@@ -916,7 +786,8 @@ async function loadSportsPosts() {
       <div class="side-card">
         <div style="position:relative;">
           <a href="post-details.html?id=${post._id}">
-            <img src="http://localhost:3000/IMAGE/${post.image}" alt="${post.title}" />
+            <img src="https://news-websites-jch5.onrender.com/IMAGE
+/${post.image}" alt="${post.title}" />
           </a>
         </div>
         <div class="side-info">
@@ -962,7 +833,8 @@ async function loadEventPosts() {
       .map(
         (post) => `
          <div class="big-card" onclick="window.location.href='post-details.html?id=${post._id}'">
-          <img src="http://localhost:3000/IMAGE/${post.image}" alt="${post.title}" />
+          <img src="https://news-websites-jch5.onrender.com/IMAGE
+/${post.image}" alt="${post.title}" />
           <div class="info">
             <div>
               <span class="section"></span>
@@ -979,7 +851,8 @@ async function loadEventPosts() {
       .map(
         (post) => `
         <div class="small-card" onclick="window.location.href='post-details.html?id=${post._id}'">
-          <img src="http://localhost:3000/IMAGE/${post.image}" alt="${post.title}" />
+          <img src="https://news-websites-jch5.onrender.com/IMAGE
+/${post.image}" alt="${post.title}" />
           <div class="info">
             <span class="section"></span>
             <div class="title">${post.title}</div>
@@ -1020,7 +893,8 @@ async function loadPoliticsPosts() {
         (post, i) => `
         <div class="politics-card" style="animation-delay: ${i * 0.1}s" onclick="window.location.href='post-details.html?id=${post._id}'">
           <div class="politics-image">
-            <img src="http://localhost:3000/IMAGE/${post.image}" alt="${post.title}">
+            <img src="https://news-websites-jch5.onrender.com/IMAGE
+/${post.image}" alt="${post.title}">
           </div>
           <div class="politics-content">
             <div>
@@ -1193,6 +1067,157 @@ document.addEventListener("DOMContentLoaded", () => {
     .catch((err) => console.error("Error loading hero intro:", err));
 });
 
+
+// ///////ADVERSTING JS/////////////////
+// async function loadAdvertisingPosts() {
+//   try {
+//     const res = await fetch("http://localhost:3000/api/posts/section/advertising");
+//     const posts = await res.json();
+//     console.log(posts);
+
+//     const container = document.getElementById("advertising-container");
+
+//     if (!posts.length) {
+//       container.innerHTML = '<p style="color:white">No posts available</p>';
+//       return;
+//     }
+
+//     const featured = posts[0];
+//     const sidePosts = posts.slice(1);
+
+//     const featuredHTML = `
+//   <a href="post-details.html?id=${featured._id}" class="featured-card">
+//       <img src="https://news-websites-jch5.onrender.com/IMAGE
+//${featured.image}" alt="${featured.title}" / >
+  //       <div class="featured-info">
+  //           <h3>${featured.title}</h3>
+  //           <p>${featured.content || ''}</p>
+  //       </div>
+  //   </a>
+  // `;
+
+  //     const sideHTML = sidePosts.map(post => `
+  //    <a href="post-details.html?id=${post._id}" class="side-card">
+  //       <div style="position:relative;">
+  //         <img src="https://news-websites-jch5.onrender.com/IMAGE
+  //${post.image}" alt="${post.title}" / 
+  //       </div>
+  //       <div class="side-info">
+  //         <div class="title">${post.title}</div>
+  //         <p class="excerpt">${post.content ? post.content.substring(0, 100) + '...' : ''}</p>
+  //       </div>
+  //    </a>
+  // `).join("");
+
+  //     container.innerHTML = featuredHTML + `<div class="side-cards">${sideHTML}</div>`;
+
+  //   } catch (err) {
+  //     console.error("Error loading advertising posts:", err);
+  //     document.getElementById("advertising-container").innerHTML =
+  //       '<p style="color:red">Error loading posts</p>';
+  //   }
+  // }
+
+  // // Marketing Section
+  // async function loadMarketingPosts() {
+  //   try {
+  //     const res = await fetch("http://localhost:3000/api/posts/section/marketing");
+  //     const posts = await res.json();
+  //     const container = document.getElementById("marketing-container");
+
+  //     if (!posts.length) {
+  //       container.innerHTML = "<p>No marketing posts available.</p>";
+  //       return;
+  //     }
+
+  //     // First 2 posts for big cards
+  //     const bigCards = posts.slice(0, 2);
+  //     // Next 3 posts for small cards
+  //     const smallCards = posts.slice(2, 5);
+
+  //     const bigCardsHTML = bigCards
+  //       .map(
+  //         (post) => `
+  //       <a href="post-details.html?id=${post._id}" class="big-card">
+  //         <img src="https://news-websites-jch5.onrender.com/IMAGE
+  //${post.image}" alt="${post.title}" / >
+  //         <div class="info">
+  //           <div><span class="section"></span></div>
+  //           <div class="title">${post.title}</div>
+  //           <p class="politics-excerpt">${post.content ? post.content.substring(0, 100) + '...' : ''}</p>
+  //         </div>
+  //       </a>
+  //     `
+  //       )
+  //       .join("");
+
+  //     const smallCardsHTML = smallCards
+  //       .map(
+  //         (post) => `
+  //            <a href="post-details.html?id=${post._id}" class="small-card">
+  //           <img src="https://news-websites-jch5.onrender.com/IMAGE
+  //${post.image}" alt="${post.title}" / >
+//           <div class="info">
+//             <span class="section"></span>
+//             <div class="title">${post.title}</div>
+//             <p class="politics-excerpt">${post.content?.substring(0, 100) || ''}...</p>
+//           </div>
+//         </a>
+//       `
+//       )
+//       .join("");
+
+//     container.innerHTML = `
+//       <div class="big-cards">${bigCardsHTML}</div>
+//       <div class="small-cards">${smallCardsHTML}</div>
+//     `;
+//   } catch (err) {
+//     console.error("Error loading marketing posts:", err);
+//     document.getElementById("marketing-container").innerHTML =
+//       "<p>Error loading marketing posts.</p>";
+//   }
+// }
+
+// // Brands Section
+// async function loadBrandsPosts() {
+//   try {
+//     const response = await fetch("http://localhost:3000/api/posts/section/brands");
+//     const posts = await response.json();
+//     const container = document.getElementById("brands-container");
+
+//     if (!posts.length) {
+//       container.innerHTML = "<p>No brand posts found.</p>";
+//       return;
+//     }
+
+//     container.innerHTML = posts
+//       .map((post, i) => `
+//           <a href="post-details.html?id=${post._id}" class="politics-card" style="animation-delay: ${i * 0.1}s">
+//           <div class="politics-image">
+//             <img src="https://news-websites-jch5.onrender.com/IMAGE
+//                 ${post.image}" alt="${post.title}">
+//           </div>
+//           <div class="politics-content">
+//             <div>
+//               <span class="section"></span>
+//             </div>
+//             <h3 class="politics-title">${post.title}</h3>
+//             <p class="politics-excerpt">${post.content.substring(0, 100)}...</p>
+//           </div>
+//        </a>
+//       `)
+//       .join("");
+
+//   } catch (error) {
+//     console.error("Error loading brands posts:", error);
+//     document.getElementById("brands-container").innerHTML =
+//       "<p>Error loading brand posts.</p>";
+//   }
+// }
+
+// loadAdvertisingPosts();
+// loadMarketingPosts();
+// loadBrandsPosts();
 
 
 

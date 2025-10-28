@@ -562,7 +562,8 @@
                     banners.forEach((banner) => {
                         const tr = document.createElement("tr");
                         tr.innerHTML = `
-            <td><img src="http://localhost:3000/IMAGE/${encodeURIComponent(banner.image)}" alt="Banner" onclick="return false;" style="pointer-events: none;" /></td>
+            <td><img src="https://news-websites-jch5.onrender.com/IMAGE
+/${encodeURIComponent(banner.image)}" alt="Banner" onclick="return false;" style="pointer-events: none;" /></td>
             <td>
                 <button class="btn edit" onclick="editBanner('${banner._id}')">Edit</button>
                 <button class="btn delete" onclick="deleteBanner('${banner._id}')">Delete</button>
@@ -589,7 +590,8 @@
                     contentInput.value = banner.content;
 
                     if (banner.image) {
-                        imagePreview.src = `http://localhost:3000/IMAGE/${encodeURIComponent(banner.image)}`;
+                        imagePreview.src = `https://news-websites-jch5.onrender.com/IMAGE
+/${encodeURIComponent(banner.image)}`;
                         imagePreview.style.display = "block";
                     } else {
                         imagePreview.style.display = "none";

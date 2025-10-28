@@ -438,7 +438,8 @@
                         if (relatedPosts.length > 0) {
                             morePostsListEl.innerHTML = relatedPosts.map(post => `
                                 <div class="more-post-item" onclick="window.location.href='post-details.html?id=${post._id}&section=${sectionName}'">
-                                    <img src="http://localhost:3000/IMAGE/${post.image || 'default.jpg'}" alt="${post.title}" />
+                                    <img src="https://news-websites-jch5.onrender.com/IMAGE
+/${post.image || 'default.jpg'}" alt="${post.title}" />
                                     <div class="more-post-content">
                                         <h4>${post.title}</h4>
                                         <p>${post.description ? post.description.substring(0, 100) : (post.content ? post.content.substring(0, 100) + '...' : '')}</p>
@@ -468,7 +469,8 @@
                             mainPostEl.innerHTML = `
                                 <h1>${currentPost.title}</h1>
                                  <p>${currentPost.content}</p>
-                                ${currentPost.image ? `<img src="http://localhost:3000/IMAGE/${currentPost.image}" alt="${currentPost.title}" style="max-width: 100%; height: auto; margin: 20px 0;" />` : ''}
+                                ${currentPost.image ? `<img src="https://news-websites-jch5.onrender.com/IMAGE
+/${currentPost.image}" alt="${currentPost.title}" style="max-width: 100%; height: auto; margin: 20px 0;" />` : ''}
                                
                                 ${currentPost.description ? `<p>${currentPost.description}</p>` : ''}
                             `;
@@ -544,7 +546,8 @@
                     container.innerHTML = limitedPosts.map(post => `
                 <a href="post-details.html?id=${post._id}">
                     <div class="article">
-                        <img src="http://localhost:3000/IMAGE/${post.image || 'default.jpg'}" alt="${post.title}" />
+                        <img src="https://news-websites-jch5.onrender.com/IMAGE
+/${post.image || 'default.jpg'}" alt="${post.title}" />
                         <div class="article-text">
                             <h5>${post.title}</h5>
                             <p>${post.content || ''}</p>
