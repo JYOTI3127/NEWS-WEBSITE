@@ -5,7 +5,7 @@ const cors = require("cors");
 const path = require("path");
 const mongoose = require("mongoose");
 const nodemailer = require("nodemailer");
-const fs = require("fs");
+
 
 // Import routes
 const apiRoutes = require("./routes/api");
@@ -16,22 +16,24 @@ const bannerRoutes = require("./routes/bannerRoutes");
 const userAuthRoutes = require("./routes/userAuth");
 const advertisementRoutes = require("./routes/advertisementRoutes");
 const newsRoutes = require("./routes/newsRoutes");
+const rootPath = path.join(__dirname, "..");
 
-// ✅ Root path (parent folder = marketing)
-const rootPath = path.resolve(__dirname, "..");
 
 // Initialize Express
 const app = express();
 
 app.use(cors());
 app.use(express.json({ limit: "10mb" }));
+app.use(express.static(rootPath));
 
 // =========================
 // STATIC FILE SETUP
 // =========================
 app.use("/IMAGE", express.static(path.join(__dirname, "IMAGE")));
 app.use("/MEDIA", express.static(path.join(__dirname, "MEDIA")));
-app.use(express.static(rootPath)); // serve all frontend files
+
+// ✅ Serve frontend static files from parent folder (marketing)
+app.use(express.static(path.join(__dirname, "..")));
 
 // =========================
 // Nodemailer Config
@@ -99,30 +101,24 @@ app.use("/api/advertisements", advertisementRoutes);
 // =========================
 // FRONTEND ROUTES
 // =========================
-
-// 🏠 Home
 app.get("/", (req, res) => {
-  res.sendFile(path.join(rootPath, "home.html"));
+  res.sendFile(path.join(__dirname, "..", "home.html"));
 });
 
-// 🧩 Header/Footer dynamic serve
-app.get("/:fileName(header.html|footer.html)", (req, res) => {
-  const filePath = path.join(rootPath, req.params.fileName);
-  if (fs.existsSync(filePath)) {
-    res.sendFile(filePath);
-  } else {
-    console.error(`❌ File not found: ${filePath}`);
-    res.status(404).send("Not Found");
-  }
+app.get("/header.html", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "header.html"));
 });
 
-// ⚙️ Other HTML pages
+app.get("/footer.html", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "footer.html"));
+});
+
 app.get("/admin", (req, res) => {
-  res.sendFile(path.join(rootPath, "admin.html"));
+  res.sendFile(path.join(__dirname, "..", "admin.html"));
 });
 
 app.get("/post-details.html", (req, res) => {
-  res.sendFile(path.join(rootPath, "post-details.html"));
+  res.sendFile(path.join(__dirname, "..", "post-details.html"));
 });
 
 // =========================
