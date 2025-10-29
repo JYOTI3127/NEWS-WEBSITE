@@ -106,11 +106,11 @@ app.get("/", (req, res) => {
 });
 
 app.get("/Header.html", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "Header.html"));
+  res.sendFile(path.resolve(__dirname, "../Header.html"));
 });
 
 app.get("/Footer.html", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "Footer.html"));
+  res.sendFile(path.resolve(__dirname, "../Footer.html"));
 });
 
 app.get("/admin", (req, res) => {
