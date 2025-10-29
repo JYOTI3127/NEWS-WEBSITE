@@ -105,12 +105,12 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "home.html"));
 });
 
-app.get("/header.html", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "header.html"));
+app.get("/Header.html", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "Header.html"));
 });
 
-app.get("/footer.html", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "footer.html"));
+app.get("/Footer.html", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "Footer.html"));
 });
 
 app.get("/admin", (req, res) => {
