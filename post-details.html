@@ -328,43 +328,43 @@
             document.addEventListener('DOMContentLoaded', () => {
                 AOS.init({ duration: 500, once: false });
 
-                fetch('header.html')
-                    .then(res => res.text())
-                    .then(html => {
-                        document.getElementById('header').innerHTML = html;
+                fetch('Header.html')
+                        .then(res => res.text())
+                        .then(html => {
+                            document.getElementById('header').innerHTML = html;
 
-                        const menuToggle = document.getElementById('menu-toggle');
-                        const sidebar = document.getElementById('sidebar');
-                        const overlay = document.getElementById('overlay');
-                        const closeSidebar = document.getElementById('close-sidebar');
+                            const menuToggle = document.getElementById('menu-toggle');
+                            const sidebar = document.getElementById('sidebar');
+                            const overlay = document.getElementById('overlay');
+                            const closeSidebar = document.getElementById('close-sidebar');
 
-                        menuToggle?.addEventListener('click', () => {
-                            sidebar?.classList.add('open');
-                            overlay?.classList.add('active');
-                            document.body.style.overflow = 'hidden';
-                        });
-
-                        const hideSidebar = () => {
-                            sidebar?.classList.remove('open');
-                            overlay?.classList.remove('active');
-                            document.body.style.overflow = '';
-                        };
-
-                        closeSidebar?.addEventListener('click', hideSidebar);
-                        overlay?.addEventListener('click', hideSidebar);
-
-                        const submenuToggles = sidebar?.querySelectorAll('.submenu-toggle') || [];
-                        submenuToggles.forEach(btn => {
-                            btn.addEventListener('click', e => {
-                                e.stopPropagation();
-                                const submenu = btn.parentElement.nextElementSibling;
-                                submenu?.classList.toggle('open');
+                            menuToggle?.addEventListener('click', () => {
+                                sidebar?.classList.add('open');
+                                overlay?.classList.add('active');
+                                document.body.style.overflow = 'hidden';
                             });
-                        });
 
-                        AOS.refresh();
-                    })
-                    .catch(err => console.error('Header load error:', err));
+                            const hideSidebar = () => {
+                                sidebar?.classList.remove('open');
+                                overlay?.classList.remove('active');
+                                document.body.style.overflow = '';
+                            };
+
+                            closeSidebar?.addEventListener('click', hideSidebar);
+                            overlay?.addEventListener('click', hideSidebar);
+
+                            const submenuToggles = sidebar?.querySelectorAll('.submenu-toggle') || [];
+                            submenuToggles.forEach(btn => {
+                                btn.addEventListener('click', e => {
+                                    e.stopPropagation();
+                                    const submenu = btn.parentElement.nextElementSibling;
+                                    submenu?.classList.toggle('open');
+                                });
+                            });
+
+                            AOS.refresh();
+                        })
+                        .catch(err => console.error('Header load error:', err));
 
                 fetch('footer.html')
                     .then(res => res.text())
@@ -413,7 +413,7 @@
                 async function loadRelatedPosts(sectionName) {
                     try {
                         console.log("👉 Loading related posts for section:", sectionName);
-                        const response = await fetch(`http://localhost:3000/api/posts/section/${sectionName}`);
+                        const response = await fetch(`https://news-websites-jch5.onrender.com/api/posts/section/${sectionName}`);
                         const posts = await response.json();
 
                         console.log("👉 All posts from API:", posts);
@@ -438,8 +438,7 @@
                         if (relatedPosts.length > 0) {
                             morePostsListEl.innerHTML = relatedPosts.map(post => `
                                 <div class="more-post-item" onclick="window.location.href='post-details.html?id=${post._id}&section=${sectionName}'">
-                                    <img src="https://news-websites-jch5.onrender.com/IMAGE
-/${post.image || 'default.jpg'}" alt="${post.title}" />
+                                    <img src="https://news-websites-jch5.onrender.com/IMAGE/${post.image || 'default.jpg'}" alt="${post.title}" />
                                     <div class="more-post-content">
                                         <h4>${post.title}</h4>
                                         <p>${post.description ? post.description.substring(0, 100) : (post.content ? post.content.substring(0, 100) + '...' : '')}</p>
@@ -462,7 +461,7 @@
                 async function loadPosts() {
                     try {
                         // Current post load karo
-                        const currentPostResponse = await fetch(`http://localhost:3000/api/posts/${postId}`);
+                        const currentPostResponse = await fetch(`https://news-websites-jch5.onrender.com/api/posts/${postId}`);
                         const currentPost = await currentPostResponse.json();
 
                         if (currentPost) {
