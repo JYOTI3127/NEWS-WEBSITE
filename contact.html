@@ -90,7 +90,7 @@
                 });
 
                 /* --- HEADER LOAD --- */
-                fetch('header.html')
+                fetch('Header.html')
                     .then(res => res.text())
                     .then(html => {
                         document.getElementById('header').innerHTML = html;
@@ -136,7 +136,8 @@
                     .catch(err => console.error('Header load error:', err));
 
                 /* --- FOOTER LOAD --- */
-                fetch('footer.html')
+                fetch('Footer.html')
+
                     .then(res => res.text())
                     .then(html => {
                         document.getElementById('footer').innerHTML = html;
@@ -166,88 +167,88 @@
         </script>
 
         <script>
-        // Contact Form Submit Handler with Validation
-        const contactForm = document.getElementById("contactForm");
-        const responseMsg = document.getElementById("responseMsg");
+            // Contact Form Submit Handler with Validation
+            const contactForm = document.getElementById("contactForm");
+            const responseMsg = document.getElementById("responseMsg");
 
-        contactForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
+            contactForm.addEventListener("submit", async (e) => {
+                e.preventDefault();
 
-        // Basic Validation
-        const firstName = contactForm.firstName.value.trim();
-        const lastName = contactForm.lastName.value.trim();
-        const phone = contactForm.number.value.trim();
-        const email = contactForm.email.value.trim();
-        const message = contactForm.message.value.trim();
+                // Basic Validation
+                const firstName = contactForm.firstName.value.trim();
+                const lastName = contactForm.lastName.value.trim();
+                const phone = contactForm.number.value.trim();
+                const email = contactForm.email.value.trim();
+                const message = contactForm.message.value.trim();
 
-        // Name should not contain numbers
-        const nameRegex = /^[A-Za-z ]+$/;
-        if (!nameRegex.test(firstName) || !nameRegex.test(lastName)) {
-        responseMsg.textContent = "Name should only contain alphabets.";
-        responseMsg.style.color = "red";
-        return;
-        }
+                // Name should not contain numbers
+                const nameRegex = /^[A-Za-z ]+$/;
+                if (!nameRegex.test(firstName) || !nameRegex.test(lastName)) {
+                    responseMsg.textContent = "Name should only contain alphabets.";
+                    responseMsg.style.color = "red";
+                    return;
+                }
 
-        // Phone should be exactly 10 digits, no alphabets
-        const phoneRegex = /^\d{10}$/;
-        if (!phoneRegex.test(phone)) {
-        responseMsg.textContent = "Phone number must be exactly 10 digits.";
-        responseMsg.style.color = "red";
-        return;
-        }
+                // Phone should be exactly 10 digits, no alphabets
+                const phoneRegex = /^\d{10}$/;
+                if (!phoneRegex.test(phone)) {
+                    responseMsg.textContent = "Phone number must be exactly 10 digits.";
+                    responseMsg.style.color = "red";
+                    return;
+                }
 
-        // Form data
-        const formData = {
-        name: firstName + " " + lastName,
-        email: email,
-        number: phone,
-        message: message
-        };
+                // Form data
+                const formData = {
+                    name: firstName + " " + lastName,
+                    email: email,
+                    number: phone,
+                    message: message
+                };
 
-        try {
-        const res = await fetch("/send", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData)
-        });
+                try {
+                    const res = await fetch("/send", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(formData)
+                    });
 
-        const responseText = await res.text();
+                    const responseText = await res.text();
 
-        if (res.ok) {
-        try {
-        const result = JSON.parse(responseText);
-        responseMsg.textContent = result.message || "Message sent successfully!";
-        responseMsg.style.color = "green";
-        contactForm.reset();
-        } catch {
-        responseMsg.textContent = "Message sent successfully!";
-        responseMsg.style.color = "green";
-        contactForm.reset();
-        }
-        // Hide success message after 1.5 seconds
-        setTimeout(() => {
-        responseMsg.textContent = "";
-        }, 1500);
-        } else {
-        try {
-        const result = JSON.parse(responseText);
-        responseMsg.textContent = result.error || "Failed to send message.";
-        if (result.details) {
-        responseMsg.textContent += " - " + result.details;
-        }
-        console.error("Server error:", result);
-        } catch {
-        responseMsg.textContent = "Server error: " + responseText;
-        console.error("Server text error:", responseText);
-        }
-        responseMsg.style.color = "red";
-        }
-        } catch (err) {
-        responseMsg.textContent = "Network error: " + err.message;
-        responseMsg.style.color = "red";
-        console.error("Network error details:", err);
-        }
-        });
+                    if (res.ok) {
+                        try {
+                            const result = JSON.parse(responseText);
+                            responseMsg.textContent = result.message || "Message sent successfully!";
+                            responseMsg.style.color = "green";
+                            contactForm.reset();
+                        } catch {
+                            responseMsg.textContent = "Message sent successfully!";
+                            responseMsg.style.color = "green";
+                            contactForm.reset();
+                        }
+                        // Hide success message after 1.5 seconds
+                        setTimeout(() => {
+                            responseMsg.textContent = "";
+                        }, 1500);
+                    } else {
+                        try {
+                            const result = JSON.parse(responseText);
+                            responseMsg.textContent = result.error || "Failed to send message.";
+                            if (result.details) {
+                                responseMsg.textContent += " - " + result.details;
+                            }
+                            console.error("Server error:", result);
+                        } catch {
+                            responseMsg.textContent = "Server error: " + responseText;
+                            console.error("Server text error:", responseText);
+                        }
+                        responseMsg.style.color = "red";
+                    }
+                } catch (err) {
+                    responseMsg.textContent = "Network error: " + err.message;
+                    responseMsg.style.color = "red";
+                    console.error("Network error details:", err);
+                }
+            });
         </script>
     </body>
 

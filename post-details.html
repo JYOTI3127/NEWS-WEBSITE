@@ -329,44 +329,45 @@
                 AOS.init({ duration: 500, once: false });
 
                 fetch('Header.html')
-                        .then(res => res.text())
-                        .then(html => {
-                            document.getElementById('header').innerHTML = html;
+                    .then(res => res.text())
+                    .then(html => {
+                        document.getElementById('header').innerHTML = html;
 
-                            const menuToggle = document.getElementById('menu-toggle');
-                            const sidebar = document.getElementById('sidebar');
-                            const overlay = document.getElementById('overlay');
-                            const closeSidebar = document.getElementById('close-sidebar');
+                        const menuToggle = document.getElementById('menu-toggle');
+                        const sidebar = document.getElementById('sidebar');
+                        const overlay = document.getElementById('overlay');
+                        const closeSidebar = document.getElementById('close-sidebar');
 
-                            menuToggle?.addEventListener('click', () => {
-                                sidebar?.classList.add('open');
-                                overlay?.classList.add('active');
-                                document.body.style.overflow = 'hidden';
+                        menuToggle?.addEventListener('click', () => {
+                            sidebar?.classList.add('open');
+                            overlay?.classList.add('active');
+                            document.body.style.overflow = 'hidden';
+                        });
+
+                        const hideSidebar = () => {
+                            sidebar?.classList.remove('open');
+                            overlay?.classList.remove('active');
+                            document.body.style.overflow = '';
+                        };
+
+                        closeSidebar?.addEventListener('click', hideSidebar);
+                        overlay?.addEventListener('click', hideSidebar);
+
+                        const submenuToggles = sidebar?.querySelectorAll('.submenu-toggle') || [];
+                        submenuToggles.forEach(btn => {
+                            btn.addEventListener('click', e => {
+                                e.stopPropagation();
+                                const submenu = btn.parentElement.nextElementSibling;
+                                submenu?.classList.toggle('open');
                             });
+                        });
 
-                            const hideSidebar = () => {
-                                sidebar?.classList.remove('open');
-                                overlay?.classList.remove('active');
-                                document.body.style.overflow = '';
-                            };
+                        AOS.refresh();
+                    })
+                    .catch(err => console.error('Header load error:', err));
 
-                            closeSidebar?.addEventListener('click', hideSidebar);
-                            overlay?.addEventListener('click', hideSidebar);
+                fetch('Footer.html')
 
-                            const submenuToggles = sidebar?.querySelectorAll('.submenu-toggle') || [];
-                            submenuToggles.forEach(btn => {
-                                btn.addEventListener('click', e => {
-                                    e.stopPropagation();
-                                    const submenu = btn.parentElement.nextElementSibling;
-                                    submenu?.classList.toggle('open');
-                                });
-                            });
-
-                            AOS.refresh();
-                        })
-                        .catch(err => console.error('Header load error:', err));
-
-                fetch('footer.html')
                     .then(res => res.text())
                     .then(html => {
                         document.getElementById('footer').innerHTML = html;
@@ -398,57 +399,40 @@
             document.addEventListener('DOMContentLoaded', () => {
                 const params = new URLSearchParams(window.location.search);
                 const postId = params.get('id');
-                const currentSection = params.get('section') || "magazine"; // agar section na ho toh default magazine
+                const currentSection = params.get('section') || "magazine";
+                const baseURL = window.location.origin;
 
                 console.log("👉 Current Post ID:", postId);
                 console.log("👉 Current Section:", currentSection);
 
-                // DOM elements
                 const mainPostEl = document.getElementById("mainPost");
                 const morePostsEl = document.getElementById("morePosts");
                 const morePostsListEl = document.getElementById("morePostsList");
                 const readMoreBtn = document.getElementById("readMoreBtn");
 
-                // Function to load related posts from same section
+                // Function to load related posts
                 async function loadRelatedPosts(sectionName) {
                     try {
                         console.log("👉 Loading related posts for section:", sectionName);
-                        const response = await fetch(`https://news-websites-jch5.onrender.com/api/posts/section/${sectionName}`);
+                        const response = await fetch(`${baseURL}/api/posts/section/${sectionName}`);
                         const posts = await response.json();
 
                         console.log("👉 All posts from API:", posts);
 
-                        // Check if all posts belong to the requested section
-                        const postsWithDifferentSections = posts.filter(post =>
-                            !post.section || !post.section.includes(sectionName)
-                        );
-                        console.log("👉 Posts with different sections:", postsWithDifferentSections);
-
-                        // Current post ko filter out karo aur random posts select karo
                         const filteredPosts = posts.filter(post => post._id !== postId);
-                        console.log("👉 Filtered posts (excluding current):", filteredPosts);
-
-                        // Randomly select 4 posts (ya jitne available hain)
-                        const relatedPosts = filteredPosts
-                            .sort(() => Math.random() - 0.5) // Random shuffle
-                            .slice(0, 6);
-
-                        console.log("👉 Final related posts to show:", relatedPosts);
+                        const relatedPosts = filteredPosts.sort(() => Math.random() - 0.5).slice(0, 6);
 
                         if (relatedPosts.length > 0) {
                             morePostsListEl.innerHTML = relatedPosts.map(post => `
-                                <div class="more-post-item" onclick="window.location.href='post-details.html?id=${post._id}&section=${sectionName}'">
-                                    <img src="https://news-websites-jch5.onrender.com/IMAGE/${post.image || 'default.jpg'}" alt="${post.title}" />
-                                    <div class="more-post-content">
-                                        <h4>${post.title}</h4>
-                                        <p>${post.description ? post.description.substring(0, 100) : (post.content ? post.content.substring(0, 100) + '...' : '')}</p>
-                                        <a href="post-details.html?id=${post._id}&section=${sectionName}" class="read-more-link">Read More</a>
-                                    </div>
-                                </div>
-                            `).join('');
-
-                            // Related posts section initially hidden rahega
-                            // Sirf "Read More" button click karne par show hoga
+                    <div class="more-post-item" onclick="window.location.href='post-details.html?id=${post._id}&section=${sectionName}'">
+                        <img src="${baseURL}/IMAGE/${post.image || 'default.jpg'}" alt="${post.title}" />
+                        <div class="more-post-content">
+                            <h4>${post.title}</h4>
+                            <p>${post.description ? post.description.substring(0, 100) : (post.content ? post.content.substring(0, 100) + '...' : '')}</p>
+                            <a href="post-details.html?id=${post._id}&section=${sectionName}" class="read-more-link">Read More</a>
+                        </div>
+                    </div>
+                `).join('');
                         } else {
                             console.log("👉 No related posts found for section:", sectionName);
                         }
@@ -457,44 +441,26 @@
                     }
                 }
 
-                // Load posts from API
+                // Function to load main post
                 async function loadPosts() {
                     try {
-                        // Current post load karo
-                        const currentPostResponse = await fetch(`https://news-websites-jch5.onrender.com/api/posts/${postId}`);
+                        const currentPostResponse = await fetch(`${baseURL}/api/posts/${postId}`);
                         const currentPost = await currentPostResponse.json();
 
                         if (currentPost) {
                             mainPostEl.innerHTML = `
-                                <h1>${currentPost.title}</h1>
-                                 <p>${currentPost.content}</p>
-                                ${currentPost.image ? `<img src="https://news-websites-jch5.onrender.com/IMAGE
-/${currentPost.image}" alt="${currentPost.title}" style="max-width: 100%; height: auto; margin: 20px 0;" />` : ''}
-                               
-                                ${currentPost.description ? `<p>${currentPost.description}</p>` : ''}
-                            `;
+                    <h1>${currentPost.title}</h1>
+                    <p>${currentPost.content}</p>
+                    ${currentPost.image ? `<img src="${baseURL}/IMAGE/${currentPost.image}" alt="${currentPost.title}" style="max-width: 100%; height: auto; margin: 20px 0;" />` : ''}
+                    ${currentPost.description ? `<p>${currentPost.description}</p>` : ''}
+                `;
 
-                            console.log("👉 Current Post Details:", currentPost);
-                            console.log("👉 Current Post Sections:", currentPost.section);
-
-                            // Current post ke section ke related posts load karo
-                            // URL mein jo section parameter hai, uske based par related posts load karo
-                            // Agar URL mein section parameter hai toh wahi use karo, nahi toh post ke sections mein se koi bhi
                             if (currentSection && currentSection !== "magazine") {
-                                console.log("👉 Using section from URL:", currentSection);
                                 loadRelatedPosts(currentSection);
                             } else if (currentPost.section && currentPost.section.length > 0) {
-                                // URL mein section na ho ya magazine ho, toh post ke sections mein se koi bhi non-magazine section dhundho
                                 const nonMagazineSection = currentPost.section.find(section => section !== "magazine");
-                                if (nonMagazineSection) {
-                                    console.log("👉 Using non-magazine section from post:", nonMagazineSection);
-                                    loadRelatedPosts(nonMagazineSection);
-                                } else {
-                                    console.log("👉 Using first section from post:", currentPost.section[0]);
-                                    loadRelatedPosts(currentPost.section[0]);
-                                }
+                                loadRelatedPosts(nonMagazineSection || currentPost.section[0]);
                             } else {
-                                console.log("👉 Using default section:", currentSection);
                                 loadRelatedPosts(currentSection);
                             }
                         }
@@ -504,9 +470,7 @@
                     }
                 }
 
-                // Read More button functionality
                 readMoreBtn.addEventListener('click', () => {
-                    // Agar more posts already visible hain toh hide karo, nahi toh show karo
                     if (morePostsEl.style.display === 'none') {
                         morePostsEl.style.display = 'block';
                         readMoreBtn.textContent = 'Show Less';
@@ -518,7 +482,6 @@
 
                 loadPosts();
             });
-
         </script>
 
 
@@ -531,7 +494,7 @@
 
         <!-- Magazine Section -->
         <script>
-            fetch('http://localhost:3000/api/posts/section/magazine')
+            fetch('https://news-websites-jch5.onrender.com/api/posts/section/magazine')
                 .then(response => response.json())
                 .then(data => {
                     if (!Array.isArray(data)) {
@@ -545,8 +508,7 @@
                     container.innerHTML = limitedPosts.map(post => `
                 <a href="post-details.html?id=${post._id}">
                     <div class="article">
-                        <img src="https://news-websites-jch5.onrender.com/IMAGE
-/${post.image || 'default.jpg'}" alt="${post.title}" />
+                        <img src="https://news-websites-jch5.onrender.com/IMAGE/${post.image || 'default.jpg'}" alt="${post.title}" />
                         <div class="article-text">
                             <h5>${post.title}</h5>
                             <p>${post.content || ''}</p>

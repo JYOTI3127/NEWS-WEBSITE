@@ -79,7 +79,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             AOS.init({ duration: 500, once: false });
 
-            fetch('header.html')
+            fetch('Header.html')
                 .then(res => res.text())
                 .then(html => {
                     document.getElementById('header').innerHTML = html;
@@ -117,7 +117,8 @@
                 })
                 .catch(err => console.error('Header load error:', err));
 
-            fetch('footer.html')
+            fetch('Footer.html')
+
                 .then(res => res.text())
                 .then(html => {
                     document.getElementById('footer').innerHTML = html;
@@ -158,8 +159,7 @@
 
                 container.innerHTML = data.map(post => `
         <a href="post-details.html?id=${post._id}"<div class="tv-card">
-        <img src="https://news-websites-jch5.onrender.com/IMAGE
-/${post.image || 'default.jpg'}" alt="${post.title}" />
+        <img src="https://news-websites-jch5.onrender.com/IMAGE/${post.image || 'default.jpg'}" alt="${post.title}" />
         <h3>${post.title}</h3>
         <p>${post.content}</p>
       </div>

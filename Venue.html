@@ -79,43 +79,43 @@
         document.addEventListener('DOMContentLoaded', () => {
             AOS.init({ duration: 500, once: false });
 
-            fetch('header.html')
-                .then(res => res.text())
-                .then(html => {
-                    document.getElementById('header').innerHTML = html;
+            fetch('Header.html')
+                    .then(res => res.text())
+                    .then(html => {
+                        document.getElementById('header').innerHTML = html;
 
-                    const menuToggle = document.getElementById('menu-toggle');
-                    const sidebar = document.getElementById('sidebar');
-                    const overlay = document.getElementById('overlay');
-                    const closeSidebar = document.getElementById('close-sidebar');
+                        const menuToggle = document.getElementById('menu-toggle');
+                        const sidebar = document.getElementById('sidebar');
+                        const overlay = document.getElementById('overlay');
+                        const closeSidebar = document.getElementById('close-sidebar');
 
-                    menuToggle?.addEventListener('click', () => {
-                        sidebar?.classList.add('open');
-                        overlay?.classList.add('active');
-                        document.body.style.overflow = 'hidden';
-                    });
-
-                    const hideSidebar = () => {
-                        sidebar?.classList.remove('open');
-                        overlay?.classList.remove('active');
-                        document.body.style.overflow = '';
-                    };
-
-                    closeSidebar?.addEventListener('click', hideSidebar);
-                    overlay?.addEventListener('click', hideSidebar);
-
-                    const submenuToggles = sidebar?.querySelectorAll('.submenu-toggle') || [];
-                    submenuToggles.forEach(btn => {
-                        btn.addEventListener('click', e => {
-                            e.stopPropagation();
-                            const submenu = btn.parentElement.nextElementSibling;
-                            submenu?.classList.toggle('open');
+                        menuToggle?.addEventListener('click', () => {
+                            sidebar?.classList.add('open');
+                            overlay?.classList.add('active');
+                            document.body.style.overflow = 'hidden';
                         });
-                    });
 
-                    AOS.refresh();
-                })
-                .catch(err => console.error('Header load error:', err));
+                        const hideSidebar = () => {
+                            sidebar?.classList.remove('open');
+                            overlay?.classList.remove('active');
+                            document.body.style.overflow = '';
+                        };
+
+                        closeSidebar?.addEventListener('click', hideSidebar);
+                        overlay?.addEventListener('click', hideSidebar);
+
+                        const submenuToggles = sidebar?.querySelectorAll('.submenu-toggle') || [];
+                        submenuToggles.forEach(btn => {
+                            btn.addEventListener('click', e => {
+                                e.stopPropagation();
+                                const submenu = btn.parentElement.nextElementSibling;
+                                submenu?.classList.toggle('open');
+                            });
+                        });
+
+                        AOS.refresh();
+                    })
+                    .catch(err => console.error('Header load error:', err));
 
             fetch('footer.html')
                 .then(res => res.text())
