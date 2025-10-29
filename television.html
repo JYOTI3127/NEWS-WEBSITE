@@ -146,7 +146,7 @@
 
 
     <script>
-        fetch('http://localhost:3000/api/posts/section/tv')
+        fetch('https://news-websites-jch5.onrender.com/api/posts/section/tv')
             .then(response => response.json())
             .then(data => {
                 console.log(data);
@@ -159,8 +159,7 @@
 
                 container.innerHTML = data.map(post => `
       <a href="post-details.html?id=${post._id}"<div class="tv-card">
-        <img src="https://news-websites-jch5.onrender.com/IMAGE
-/${post.image || 'default.jpg'}" alt="${post.title}" />
+        <img src="https://news-websites-jch5.onrender.com/IMAGE/${post.image || 'default.jpg'}" alt="${post.title}" />
         <h3>${post.title}</h3>
         <p>${post.content}</p>
       </div>
@@ -170,7 +169,7 @@
             .catch(err => console.error("Error:", err));
 
 
-        fetch('http://localhost:3000/api/posts/section/magazine')
+        fetch('https://news-websites-jch5.onrender.com/api/posts/section/magazine')
             .then(response => response.json())
             .then(data => {
                 // data khud hi array hai, koi posts property nahi
@@ -185,8 +184,7 @@
 
                 container.innerHTML = limitedPosts.map(post => `
        <a href="post-details.html?id=${post._id}"<div class="article">
-        <img src="https://news-websites-jch5.onrender.com/IMAGE
-/${post.image || 'default.jpg'}" alt="${post.title}" />
+        <img src="https://news-websites-jch5.onrender.com/IMAGE/${post.image || 'default.jpg'}" alt="${post.title}" />
         <div class="article-text">
           <h5>${post.title}</h5>
           <p>${post.content || ''}</p>

@@ -368,10 +368,10 @@ function renderRightSidebar(posts, ads) {
   ads.forEach(ad => {
     let adHTML = '';
     if (ad.mediaType === 'image') {
-      adHTML = `<img class="fade-img" src="http://localhost:3000/MEDIA/${ad.mediaFile}" />`;
+      adHTML = `<img class="fade-img" src="https://news-websites-jch5.onrender.com/MEDIA/${ad.mediaFile}" />`;
     } else if (ad.mediaType === 'video') {
       adHTML = `<video autoplay muted loop controls>
-                  <source src="http://localhost:3000/MEDIA/${ad.mediaFile}" type="video/mp4"/>
+                  <source src="https://news-websites-jch5.onrender.com/MEDIA/${ad.mediaFile}" type="video/mp4"/>
                 </video>`;
     }
     adContainer.innerHTML += `<div class="ad-item">${adHTML}</div>`;
